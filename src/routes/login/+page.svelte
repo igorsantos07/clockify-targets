@@ -12,4 +12,4 @@ function doSave() {
 API Key:
 <input bind:value={key}/>
 <button on:click={doSave}>Save</button>
-<em>Grab this at your <a href="https://app.clockify.me/user/settings" target="_blank">Profile Settings</a></em>
+<em>Grab this at the bottom of your <a href="https://app.clockify.me/user/settings" target="_blank">Profile Settings</a></em>
