@@ -23,6 +23,7 @@
 		<Col>
 			<!-- TODO move these to a sidebar menu, like the Clockify interface -->
 			<NavbarToggler class="border-0" on:click={toggle} />
+			<NavbarBrand href="/"><img src="/logo.svg" alt="Clockify Extras" /></NavbarBrand>
 			<Collapse {isOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem> <!--TODO-->
