@@ -1,10 +1,10 @@
-import { derived, get } from 'svelte/store'
-import { persisted } from 'svelte-local-storage-store'
+import { derived } from 'svelte/store'
+import { store } from '../store.js'
 
 export default class Auth {
 
 	#keyPersistor() {
-		return persisted('API_KEY', '')
+		return store.API_KEY
 	}
 
 	get key() {
