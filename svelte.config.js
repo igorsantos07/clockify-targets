@@ -9,6 +9,8 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$cmp: 'src/cmp',
+			$data: 'src/data',
+			'~': 'node_modules',
 		}
 	},
 };

@@ -1,18 +1,13 @@
 import { derived } from 'svelte/store'
-import { store } from '../store.js'
+import { _store } from '../data/_store.js'
 
 export default class Auth {
-
-	#keyPersistor() {
-		return store.API_KEY
-	}
-
 	get key() {
-		return this.#keyPersistor()
+		return _store.API_KEY
 	}
 
 	set key(key) {
-		this.#keyPersistor().update(key)
+		_store.API_KEY.set(key)
 	}
 
 	get $isAuth() {

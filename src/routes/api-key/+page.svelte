@@ -1,18 +1,23 @@
 <script>
 import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, FormText, Icon } from 'sveltestrap'
 import Auth from '$lib/Auth.js'
-import { get } from 'svelte/store'
+import { _store, get } from '$data/_store'
+import User from '$data/User'
 import Linput from '$cmp/Linput.svelte'
+import API from '$lib/API.js'
 
 const auth = new Auth()
 const key = auth.key
 let localKey = get(key)
 
-function doSave() {
+async function doSave() {
 	$key = localKey
+	const data = await API.get('user')
+	_store.user.set(new User(data)) //no $user because we don't need to subscribe to it here
 }
 function doClear() {
 	$key = localKey = undefined
+	_store.user.set(undefined)
 }
 </script>
 
