@@ -1,13 +1,18 @@
 <script>
-import API from '$lib/API.js'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, FormGroup, FormText, Input } from 'sveltestrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, FormText, Icon } from 'sveltestrap'
+import Auth from '$lib/Auth.js'
+import { get } from 'svelte/store'
+import Linput from '../../components/Linput.svelte'
 
-let key = window.localStorage.API_KEY || ''
+const auth = new Auth()
+const key = auth.key
+let localKey = get(key)
 
 function doSave() {
-	window.localStorage.API_KEY = key
-
-	console.log(API.get('user'))
+	$key = localKey
+}
+function doClear() {
+	$key = localKey = ''
 }
 </script>
 
@@ -16,14 +21,16 @@ function doSave() {
 		<CardTitle>Clockify API</CardTitle>
 	</CardHeader>
 	<CardBody>
-		<FormGroup floating label="API Key"><!-- TODO can't make this lg... -->
-			<Input bind:value={key} autofocus maxlength="48" minlength="48"/>
-		</FormGroup>
+		<p>First, you need to get your API key from Clockify, so we can talk to it and start doing the math for you <Icon name="emoji-smile"/></p>
+
+		<!-- TODO can't make this lg... -->
+		<Linput label="API Key" bind:value={localKey} autofocus required maxlength="48" minlength="48"/>
 		<FormText>
-			Grab this at the bottom of your <a href="https://app.clockify.me/user/settings" target="_blank">Profile Settings</a>
+			Grab this at the bottom of your <a href="https://app.clockify.me/user/settings" target="_blank">Profile Settings</a>.
 		</FormText>
 	</CardBody>
 	<CardFooter class="text-end">
-		<Button color="primary" on:click={doSave}>Save</Button>
+		<Button color="secondary" on:click={doClear}><Icon name="box-arrow-right"/> Clear that and log out</Button>
+		<Button color="primary" on:click={doSave}><Icon name="box-arrow-in-left"/> Let me in!</Button>
 	</CardFooter>
 </Card>

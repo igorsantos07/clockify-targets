@@ -20,11 +20,13 @@ $dark-light : #1D272C;
 
 $font-family-sans-serif: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";
 
-$body-bg      : #263238;
-$body-color   : #c6d2d9;
-$title-color  : #c6d2d9;
-$border-color : $dark;
-$border-radius: 0;
+$body-bg              : #263238;
+$body-color           : #c6d2d9;
+$body-secondary-color : #90a4ae;
+$title-color          : $body-color;
+//$font-weight-semibold : 500; //default for titles and... maybe something else? but 500 doesn't work unless, I guess, we import this specific font weight file?
+$border-color         : $dark;
+$border-radius        : 0;
 
 $btn-color         : #FEFEFE; //not applying... why?
 $btn-font-size     : 0.75rem;
@@ -36,7 +38,7 @@ $card-cap-bg      : $dark;
 $card-title-color : $title-color;
 $card-bg          : $dark-light;
 
-$nav-link-color: #90a4ae;
+//$nav-link-color: #90a4ae;
 
 //FIXME should work with ~bootstrap, but... don't? https://github.com/sveltejs/svelte-preprocess/issues/277
 //TODO this should definitely be tree-shakeable!!!
@@ -62,9 +64,9 @@ a > i[class^=bi-] {
   //copied straight from Clockify - doesn't work very much unless that's a sequence of cards with some extra header hiding the top shadow
   //transition: box-shadow .2s ease-in-out;
   //&:hover { box-shadow: 0 0 20px #000c; }
-}
-.card-footer {
-  background-color: $card-bg;
+
+  &-title { font-weight: $font-weight-semibold } //won't work, see var declaration above
+  &-footer { background-color: $card-bg }
 }
 
 .form-text {

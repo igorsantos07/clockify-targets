@@ -1,14 +1,18 @@
 <style lang="scss">
 @import "./styles.scss";
 @import "../../node_modules/bootstrap-icons/font/bootstrap-icons";
-
 </style>
 
 <script>
 import { Collapse, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon, Nav, Navbar, NavbarToggler, NavItem, NavLink } from 'sveltestrap'
+import Auth from '$lib/Auth.js'
 
+const isAuth = new Auth().$isAuth
 let isOpen = false
-const toggle = () => (isOpen = !isOpen)
+
+function toggle() {
+	return isOpen = !isOpen
+}
 </script>
 
 <!-- color prop = bg; dark/light prop = text color...... lol -->
@@ -19,17 +23,25 @@ const toggle = () => (isOpen = !isOpen)
 		<Collapse {isOpen} navbar expand="sm">
 			<Nav navbar>
 				<NavItem>
-					<NavLink href="/login"><Icon name="box-arrow-in-left"/>Login</NavLink>
-				</NavItem> <!-- FIXME add some sort of auth helper to identify if there's an API key available -->
-				<NavItem>
-					<NavLink href="/settings"><Icon name="tools"/>Settings</NavLink> <!-- TODO -->
+					<NavLink disabled={!$isAuth} href="/settings"><Icon name="tools"/>Settings</NavLink> <!-- TODO -->
 				</NavItem>
 				<NavItem>
-					<NavLink href="/targets"><Icon name="bullseye"/>Targets</NavLink> <!-- TODO -->
+					<NavLink disabled={!$isAuth} href="/targets"><Icon name="bullseye"/>Targets</NavLink> <!-- TODO -->
 				</NavItem>
 				<NavItem>
-					<NavLink href="/periods"><Icon name="calendar"/>Periods</NavLink>  <!-- TODO -->
+					<NavLink disabled={!$isAuth} href="/periods"><Icon name="calendar"/>Periods</NavLink>  <!-- TODO -->
 				</NavItem>
+
+				{#if !$isAuth}
+					<NavItem>
+						<NavLink href="/login"><Icon name="box-arrow-in-left"/>Login</NavLink>
+					</NavItem>
+				{:else}
+					<NavItem>
+						<NavLink href="/login"><Icon name="key"/>API Key</NavLink>
+					</NavItem>
+				{/if}
+
 				<Dropdown nav inNavbar>
 					<DropdownToggle nav caret>About</DropdownToggle>
 					<DropdownMenu end>
