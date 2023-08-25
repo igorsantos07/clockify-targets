@@ -1,5 +1,5 @@
 <style lang="scss">
-  @import "./styles.scss";
+  @import "./styles/main.scss";
   @import "~/bootstrap-icons/font/bootstrap-icons";
 </style>
 

@@ -7,7 +7,7 @@
 - Logo from [logo.com](https://logo.com) (surprisingly well-used domain!) ([logo admin](https://app.logo.com/dashboard/logo_5d913e73-2389-4cb6-a70a-2211dd604f2e/))
 - [Sass][sass]: because it's sassy 💅
 - [Axios][axios]: easy to use "fetch() replacement"
-- [date-fns][date-fns]: still waiting for the Temporal API 🤷🏼‍
+- [date-fns][date-fns]: still waiting for the Temporal API, and Luxon doesn't allow changing the start of the week yet... 🤷🏼‍
 - [devalue][devalue]: a fancy little lib to better serialize data into LocalStorage, from which I got an interesting idea to serialize our own models 😎
 
 ## Developing

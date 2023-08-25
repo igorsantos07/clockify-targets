@@ -17,4 +17,7 @@ import Model from './Model'
  */
 export default class User extends Model {
 
+	get baseURL() {
+		return `workspaces/${this.activeWorkspace}/user/${this.id}/`
+	}
 }

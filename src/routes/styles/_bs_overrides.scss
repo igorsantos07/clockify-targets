@@ -1,0 +1,62 @@
+@import "vars";
+@import "~/bootstrap/scss/functions";
+
+.btn {
+  text-transform: uppercase;
+  color: $btn-color; //not sure why I had to force this
+}
+
+.card {
+  border-bottom: 3px solid $border-color;
+
+  //copied straight from Clockify - doesn't work very much unless that's a sequence of cards with some extra header hiding the top shadow
+  //transition: box-shadow .2s ease-in-out;
+  //&:hover { box-shadow: 0 0 20px #000c; }
+
+  &-title { font-weight: $font-weight-semibold } //won't work, see var declaration above
+  &-footer {
+    background-color: $card-bg;
+
+    .progress {
+      height: 1.5rem;
+    }
+  }
+}
+
+.form-text {
+  font-style: italic;
+  .form-floating + & {
+    display: block;
+    margin-top: -0.5rem;
+    //margin-bottom: 1rem; //original margin from form-floating
+  }
+}
+
+.modal-backdrop, .offcanvas-backdrop {
+  backdrop-filter: blur(2px);
+}
+
+$color-scale: (
+  n1: $cyan,
+  0: $green,
+  1: $yellow,
+  2: $orange,
+  3: $red,
+  4: $pink,
+  5: $purple
+);
+@each $level, $color in $color-scale {
+  .text-scale-#{$level} { color: $color !important; }
+  .bg-scale-#{$level} {
+    color: color-contrast($color) !important;
+    background-color: $color !important;
+    &.progress {
+      background-color: $dark-lighter !important;
+      .progress-bar {
+        color: color-contrast($color);
+        background-color: $color !important;
+      }
+    }
+  }
+  //.text-bg-scale-#{$level} { background-color: $color; }
+}

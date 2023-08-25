@@ -21,6 +21,7 @@
 		"devalue": "^4.3.2",
 		"eslint": "^8.28.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"iso8601-duration": "^2.1.1",
 		"sass": "^1.66.1",
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",

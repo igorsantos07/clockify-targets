@@ -1,0 +1,49 @@
+@use "sass:math";
+@import "vars";
+
+//TODO this should definitely be tree-shakeable!!!
+@import "~/bootstrap/scss/bootstrap";
+@import "bs_overrides";
+
+a {
+  text-decoration: none;
+  &:hover { text-decoration: underline }
+}
+
+a > i[class^=bi-] {
+  margin-right: 0.25rem;
+}
+
+#loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  div[class^=spinner-] {
+    width: 20vw;
+    height: 20vw;
+    max-width: 50vh;
+    max-height: 50vh;
+    border-width: 0.75rem;
+  }
+}
+
+header {
+  $img-height: 32px;
+  .navbar-brand img {
+    height: $img-height;
+  }
+  .navbar-expand-sm .navbar-collapse {
+    display: inline-flex !important;
+  }
+  #profile {
+    .dropdown-toggle {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    img {
+      width: $img-height;
+      border-radius: math.div($img-height, 2);
+    }
+  }
+
+}
