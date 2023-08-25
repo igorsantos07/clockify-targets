@@ -1,4 +1,4 @@
-import { s2h } from '$lib/date.js'
+import { s2h } from '$lib/date'
 
 const NUM_LOCALE = 'en-US'
 
@@ -10,6 +10,13 @@ const PERCENT  = new Intl.NumberFormat(NUM_LOCALE, { style: 'percent', maximumFr
  * @returns {string}
  */
 export const money = number => CURRENCY.format(number)
+
+export function s2$(seconds) {
+	//FIXME #5
+	const rate = 48
+	const ratePerSecond = rate / 60 / 60
+	return money(seconds * ratePerSecond)
+}
 
 export function colorScaleFor(seconds, asText = false) {
 	const hours = s2h(seconds)
