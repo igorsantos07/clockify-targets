@@ -26,7 +26,11 @@
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
 		"svelte-local-storage-store": "^0.6.0",
-		"sveltestrap": "^5.11.1",
+		"sveltestrap": "^5.11.1"
+	},
+	"devDependencies": {
+		"@babel/plugin-proposal-pipeline-operator": "^7.22.5",
+		"vite-plugin-babel": "^1.1.3",
 		"vite": "^4.3.0"
 	}
 }
