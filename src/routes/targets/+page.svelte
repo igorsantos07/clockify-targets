@@ -7,7 +7,7 @@
 	import TimeBadge from '$cmp/TimeBadge.svelte'
 
 	function s2$(seconds) {
-		//FIXME #17
+		//FIXME #5
 		const rate = 48
 		const ratePerSecond = rate / 60 / 60
 		return money(seconds * ratePerSecond)

@@ -12,7 +12,7 @@ const WEEK_START_CLOCKIFY = {
 	SATURDAY : 6,
 }
 
-const weekStartsOn = WEEK_START_CLOCKIFY[get(_store.user).settings.weekStart]
+const weekStartsOn = WEEK_START_CLOCKIFY[get(_store.user)?.settings.weekStart]
 
 export const week = {
 	start: (date = new Date()) => startOfWeek(date, { weekStartsOn }),
@@ -22,12 +22,18 @@ export const week = {
 /**
  * Converts ISO duration strings to elapsed seconds
  * Nope, date-fns doesn't support this for AGES, nor will it in v2: https://github.com/date-fns/date-fns/pull/3151#issuecomment-1246199824.
- * @param duration {string}
+ * @param isoDuration {string}
  * @returns {number}
  */
-export function d2s(duration) {
-	return toSeconds(parseDuration(duration))
-}
+export const id2s = isoDuration => toSeconds(parseDuration(isoDuration))
+
+/**
+ * Converts object durations to elapsed seconds
+ * Nope, date-fns doesn't support this for AGES, nor will it in v2: https://github.com/date-fns/date-fns/pull/3151#issuecomment-1246199824.
+ * @param duration {object}
+ * @returns {number}
+ */
+export const d2s = duration => toSeconds(duration)
 
 /**
  * Seconds to duration
@@ -52,6 +58,4 @@ export function s2d(seconds, withSeconds = false) {
  * @param decimalPlaces {number}
  * @returns {string}
  */
-export function s2h(seconds, decimalPlaces = 1) {
-	return (seconds/60/60).toFixed(decimalPlaces)
-}
+export const s2h = (seconds, decimalPlaces = 1) => (seconds / 60 / 60).toFixed(decimalPlaces)

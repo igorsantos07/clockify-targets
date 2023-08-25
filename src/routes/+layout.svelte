@@ -1,3 +1,7 @@
+<svelte:head>
+	<link rel="shortcut icon" type="image/png" href="/favicon.png" />
+</svelte:head>
+
 <style lang="scss">
   @import "./styles/main.scss";
   @import "~/bootstrap-icons/font/bootstrap-icons";
