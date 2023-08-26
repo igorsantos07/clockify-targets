@@ -31,7 +31,7 @@
 			<Collapse {isOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem> <!--TODO-->
-						<NavLink disabled={!$isAuth} href="/settings">
+						<NavLink disabled={true || !$isAuth} href="/settings">
 							<Icon name="tools" />
 							Settings
 						</NavLink>
@@ -43,7 +43,7 @@
 						</NavLink>
 					</NavItem>
 					<NavItem> <!--TODO-->
-						<NavLink disabled={!$isAuth} href="/periods">
+						<NavLink disabled={true || !$isAuth} href="/periods">
 							<Icon name="calendar" />
 							Periods
 						</NavLink>
