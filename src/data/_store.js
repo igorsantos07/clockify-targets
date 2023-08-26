@@ -4,7 +4,8 @@ import * as devalue from 'devalue'
 
 //these must stay so deserialization works properly!
 // noinspection ES6UnusedImports
-import User from '$data/User'
+import User from './User'
+import Settings from './Settings'
 
 export { get } from 'svelte/store'
 
@@ -40,8 +41,10 @@ const modelPersistance = (key, initial) => basePersisted(key, initial, {
 })
 
 export const _store = {
-	API_KEY: generalPersistance('API_KEY', ''),
+	API_KEY : generalPersistance('API_KEY', ''),
+	loading : memoryPersistance(false),
+	/** @type Settings */
+	settings: modelPersistance('settings', new Settings({ hideMoney: true })),
 	/** @type User */
-	user   : modelPersistance('user', undefined),
-	loading: memoryPersistance(false),
+	user: modelPersistance('user', undefined),
 }

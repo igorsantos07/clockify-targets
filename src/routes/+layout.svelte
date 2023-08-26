@@ -16,6 +16,7 @@
 	const isAuth = new Auth().$isAuth
 	const isLoading = _store.loading
 	const user = _store.user
+	const settings = _store.settings
 
 	function toggle() {
 		return isOpen = !isOpen
@@ -31,12 +32,6 @@
 			<Collapse {isOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem> <!--TODO-->
-						<NavLink disabled={true || !$isAuth} href="/settings">
-							<Icon name="tools" />
-							Settings
-						</NavLink>
-					</NavItem>
-					<NavItem> <!--TODO-->
 						<NavLink disabled={!$isAuth} href="/targets">
 							<Icon name="bullseye" />
 							Targets
@@ -46,6 +41,12 @@
 						<NavLink disabled={true || !$isAuth} href="/periods">
 							<Icon name="calendar" />
 							Periods
+						</NavLink>
+					</NavItem>
+					<NavItem> <!--TODO-->
+						<NavLink disabled={true || !$isAuth} href="/settings">
+							<Icon name="tools" />
+							Settings
 						</NavLink>
 					</NavItem>
 
@@ -82,11 +83,16 @@
 						</NavLink>
 					</NavItem>
 				{:else}
+					<NavItem>
+						<NavLink on:click={() => $settings.hideMoney = !$settings.hideMoney}>
+							<Icon name={$settings.hideMoney? 'eye-slash-fill' : 'eye-fill'} />
+						</NavLink>
+					</NavItem>
 					<Dropdown nav inNavbar id="profile">
 						<DropdownToggle nav caret>
 							<img src={$user.profilePicture} alt="avatar" />
 						</DropdownToggle>
-						<DropdownMenu end>
+						<DropdownMenu end class="position-absolute"><!-- absolute forces it to float even on XS -->
 							<DropdownItem header>Hi {$user.name}!</DropdownItem>
 							<!--							<DropdownItem divider/>-->
 							<DropdownItem href="/api-key">

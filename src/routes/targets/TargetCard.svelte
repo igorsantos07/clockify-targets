@@ -11,6 +11,7 @@
 	import { differenceInDays, eachDayOfInterval, format, subDays } from 'date-fns'
 	import { colorScaleFor, s2$ } from '$lib/fmt'
 	import { s2d, s2h } from '$lib/date'
+	import { _store } from '$data/_store'
 	import { persisted } from 'svelte-local-storage-store'
 	import TimeBadge from '$cmp/TimeBadge.svelte'
 
@@ -19,6 +20,8 @@
 	export let end
 	export let title
 
+	const settings = _store.settings
+	$: showOff = !$settings.hideMoney
 	const slug = 'target-' + title.replace(' ', '-')
 	const workedHours = billable + nonBillable
 	const today = Date.now()
@@ -73,12 +76,15 @@
 			<Table style="width:auto" class="mb-0">
 				<tr>
 					<td colspan="2">
-						<big><u><b><tt>{s2d(workedHours)}</tt></b> so far</u> ({s2$(workedHours)} out of {s2$(targetS)})</big>
+						<big>
+							<u><b><tt>{s2d(workedHours)}</tt></b> so far</u>
+							{#if showOff}({s2$(workedHours)} out of {s2$(targetS)}){/if}
+						</big>
 					</td>
 				</tr>
 				<tr>
 					<th>Hours left:</th>
-					<td><tt>{s2d(leftS)}</tt> ({s2$(leftS)}!!!)</td>
+					<td><tt>{s2d(leftS)}</tt> {#if showOff}({s2$(leftS)}!!!){/if}</td>
 				</tr>
 				<tr>
 					<th>Days left:</th>
