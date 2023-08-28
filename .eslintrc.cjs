@@ -11,5 +11,6 @@ module.exports = {
 		browser: true,
 		es2017: true,
 		node: true
-	}
+	},
+	reportUnusedDisableDirectives: true,
 };
