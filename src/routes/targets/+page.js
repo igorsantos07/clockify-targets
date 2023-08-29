@@ -20,14 +20,9 @@ import TimeSummary from '../../data/TimeSummary.js'
  * @param {TimeEntry} entry */
 function sumDurations(totals, { billable, timeInterval }) { //named so it gets typed.....
 	let seconds
-	if (timeInterval.duration) {
-		seconds = id2s(timeInterval.duration)
-	} else {
-		//unfinished timer
-		const duration = intervalToDuration({ start: parseISO(timeInterval.start), end: new Date() })
-		console.log(duration)
-		seconds = d2s(duration)
-	}
+	seconds = timeInterval.duration? //is the timer over?
+		id2s(timeInterval.duration) :
+		d2s(intervalToDuration({ start: parseISO(timeInterval.start), end: new Date() }))
 	totals[billable ? 'billable' : 'nonBillable'] += seconds
 	return totals
 }
