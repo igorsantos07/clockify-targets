@@ -1,7 +1,7 @@
 import { _store, get } from '$data/_store'
 import API from '$lib/API'
 import { d2s, id2s, week } from '$lib/date'
-import { endOfMonth, formatISO, intervalToDuration, parseISO, setDate, startOfMonth } from 'date-fns'
+import { endOfDay, endOfMonth, formatISO, intervalToDuration, parseISO, setDate, startOfDay, startOfMonth } from 'date-fns'
 import TimeSummary from '../../data/TimeSummary.js'
 
 /** @typedef TimeEntry
@@ -22,7 +22,7 @@ function sumDurations(totals, { billable, timeInterval }) { //named so it gets t
 	let seconds
 	seconds = timeInterval.duration? //is the timer over?
 		id2s(timeInterval.duration) :
-		d2s(intervalToDuration({ start: parseISO(timeInterval.start), end: new Date() }))
+		0 // d2s(intervalToDuration({ start: parseISO(timeInterval.start), end: new Date() })) //unfinished timer... ignore, since it will derail the current day's calculation
 	totals[billable ? 'billable' : 'nonBillable'] += seconds
 	return totals
 }
@@ -37,20 +37,20 @@ export async function load({ params }) {
 	const eof = today.getDate() <= 14 ? setDate(today, 14) : eom
 	const { data: weekly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
-			start: formatISO(week.start()),
-			end  : formatISO(eow),
+			start: formatISO(startOfDay(week.start())),
+			end  : formatISO(endOfDay(eow)),
 		},
 	})
 	const { data: fortnightly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
-			start: formatISO(sof),
-			end  : formatISO(eof),
+			start: formatISO(startOfDay(sof)),
+			end  : formatISO(endOfDay(eof)),
 		},
 	})
 	const { data: monthly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
 			start: formatISO(startOfMonth(today)),
-			end  : formatISO(eom),
+			end  : formatISO(endOfDay(eom)),
 		},
 	})
 
