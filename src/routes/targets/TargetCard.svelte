@@ -22,11 +22,13 @@
 
 	const settings = _store.settings
 	$: showOff = !$settings.hideMoney
-	const slug = 'target-' + title.replace(' ', '-')
-	const workedHours = billable + nonBillable
-	const today = Date.now()
-	const daysLeft = differenceInDays(end, today) + 1 //+1 = includes today
-	const weekendCount = eachDayOfInterval({ start: today, end })
+
+	const slug          = 'target-' + title.replace(' ', '-')
+	const workedHours   = billable + nonBillable
+	const today         = new Date()
+	const considerToday = (today.getHours() < 18)
+	const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
+	const weekendCount  = eachDayOfInterval({ start: today, end })
 		.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
 		.reduce((count, dow) => {
 			if (dow == 6) { count.total++; count.saturday++ }
