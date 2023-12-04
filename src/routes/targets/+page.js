@@ -34,7 +34,7 @@ export async function load({ params }) {
 	const eow = week.end()
 	const eom = endOfMonth(today)
 	const sof = today.getDate() <= 14 ? setDate(today, 1) : setDate(today, 15)
-	const eof = today.getDate() <= 14 ? setDate(today, 14) : eom
+	const eof = today.getDate() <= 14 ? setDate(today, 15) : eom //TODO why isn't the first fortnight ending on the 14th?
 	const { data: weekly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
 			start: formatISO(startOfDay(week.start())),
