@@ -7,8 +7,8 @@
 </style>
 
 <script>
-	import { Alert, Button, Card, CardHeader, CardTitle, Col, Icon, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Table } from 'sveltestrap'
-	import { differenceInDays, eachDayOfInterval, format, subDays } from 'date-fns'
+	import { Alert, Button, Card, CardHeader, CardTitle, Col, FormText, Icon, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Table } from 'sveltestrap'
+	import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
 	import { colorScaleFor, s2$ } from '$lib/fmt'
 	import { s2d, s2h } from '$lib/date'
 	import { _store } from '$data/_store'
@@ -36,14 +36,15 @@
 			return count
 		}, { saturday: 0, sunday: 0, total: 0 })
 
+	let daysOff = persisted(`${slug}-daysOff`, 0)
 	let targetH = persisted(slug, 36)
 	$: targetS = $targetH * 60 * 60
 	$: leftS = targetS - workedHours
 
 	//TODO use user.settings.myStartOfDay
-	$: perDay = leftS / daysLeft
-	$: perDayWoSunday = leftS / (daysLeft - weekendCount.sunday)
-	$: perDayWoWeekend = leftS / (daysLeft - weekendCount.total)
+	$: perDay = leftS / Math.max(daysLeft - $daysOff, 1)
+	$: perDayWoSunday = leftS / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1)
+	$: perDayWoWeekend = leftS / Math.max(daysLeft - weekendCount.total - $daysOff, 1)
 </script>
 
 <Card class="mb-3">
@@ -53,10 +54,22 @@
 				<CardTitle>{title}</CardTitle>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<Button color="transparent" id={slug}>
-					<Icon name="bullseye" /> {$targetH}h
+				<Button color="transparent" id={`${slug}-days-off`}>
+					<Icon name="emoji-sunglasses"/> <tt>{$daysOff}</tt> off
 				</Button>
-				<Popover target={slug} placement="right" title="Your target">
+				<Popover target={`${slug}-days-off`} placement="right" title="🏖 Holidays / vacations?">
+					<InputGroup>
+						<Input bind:value={$daysOff} type="number" min="0" max="31" />
+						<InputGroupText>days off</InputGroupText>
+					</InputGroup>
+					<FormText>Must be reduced once each day off gets spent.</FormText>
+				</Popover>
+			</Col>
+			<Col xs="auto" class="side-btn">
+				<Button color="transparent" id={`${slug}-target`}>
+					<Icon name="bullseye"/> {$targetH}h
+				</Button>
+				<Popover target={`${slug}-target`} placement="right" title="🎯 Your target">
 					<InputGroup>
 						<Input bind:value={$targetH} type="number" min="0" max="200" />
 						<InputGroupText>hours</InputGroupText>
@@ -90,7 +103,12 @@
 				</tr>
 				<tr>
 					<th>Days left:</th>
-					<td>{daysLeft} days ({weekendCount.total/2} weekend)</td>
+					<td>
+						{daysLeft} days
+						<small class="text-muted">
+							(with {weekendCount.total > 0? weekendCount.total/2 : 'no'} weekend{weekendCount.total > 3? 's' : ''}{#if $daysOff}&nbsp;+ {$daysOff} day{$daysOff > 1? 's' : ''} off{/if})
+						</small>
+					</td>
 				</tr>
 			</Table>
 		</ListGroupItem>
