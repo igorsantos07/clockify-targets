@@ -3,7 +3,7 @@
 </svelte:head>
 
 <style lang="scss">
-  @import "./styles/main.scss";
+  @import "../styles/main.scss";
   @import "~/bootstrap-icons/font/bootstrap-icons";
 </style>
 
