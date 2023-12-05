@@ -51,6 +51,9 @@ $navbar-padding-y: 0.375rem;
 
 $popover-header-bg    : $card-cap-bg;
 $popover-border-color : $popover-header-bg;
+$tooltip-opacity      : 1;
+$tooltip-border-radius: 0.5rem;
+$tooltip-color        : $body-secondary-color;
 
 @import "~/bootstrap/scss/functions";
 @import "~/bootstrap/scss/variables";

@@ -7,13 +7,14 @@
 </style>
 
 <script>
-	import { Alert, Button, Card, CardHeader, CardTitle, Col, FormText, Icon, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Table } from 'sveltestrap'
+	import { Alert, Button, Card, CardHeader, CardTitle, Col, FormText, Icon, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Table, Tooltip } from 'sveltestrap'
 	import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
 	import { colorScaleFor, s2$ } from '$lib/fmt'
 	import { s2d, s2h } from '$lib/date'
 	import { _store } from '$data/_store'
 	import { persisted } from 'svelte-local-storage-store'
 	import TimeBadge from '$cmp/TimeBadge.svelte'
+	import plur from 'plur'
 
 	export let billable = null
 	export let nonBillable = 0
@@ -23,7 +24,11 @@
 	const settings = _store.settings
 	$: showOff = !$settings.hideMoney
 
-	const slug          = 'target-' + title.replace(' ', '-')
+	function id(name) {
+		return `${id.slug}-${name}`
+	}
+	id.slug = title.replace(' ', '-')
+
 	const workedHours   = billable + nonBillable
 	const today         = new Date()
 	const considerToday = (today.getHours() < 18)
@@ -31,20 +36,22 @@
 	const weekendCount  = eachDayOfInterval({ start: today, end })
 		.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
 		.reduce((count, dow) => {
-			if (dow == 6) { count.total++; count.saturday++ }
-			if (dow == 7) { count.total++; count.sunday++ }
+			if (dow == 6) { count.days++; count.saturday++ }
+			if (dow == 7) { count.days++; count.sunday++ }
 			return count
-		}, { saturday: 0, sunday: 0, total: 0 })
+		}, { saturday: 0, sunday: 0, days: 0 })
+	weekendCount.weekdays = daysLeft - weekendCount.days
+	weekendCount.weekends = weekendCount.days / 2
 
-	let daysOff = persisted(`${slug}-daysOff`, 0)
-	let targetH = persisted(slug, 36)
+	let daysOff = persisted(id('daysOff'), 0)
+	let targetH = persisted(id('target'), 36)
 	$: targetS = $targetH * 60 * 60
 	$: leftS = targetS - workedHours
 
 	//TODO use user.settings.myStartOfDay
 	$: perDay = leftS / Math.max(daysLeft - $daysOff, 1)
 	$: perDayWoSunday = leftS / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1)
-	$: perDayWoWeekend = leftS / Math.max(daysLeft - weekendCount.total - $daysOff, 1)
+	$: perDayWoWeekend = leftS / Math.max(daysLeft - weekendCount.days - $daysOff, 1)
 </script>
 
 <Card class="mb-3">
@@ -54,10 +61,10 @@
 				<CardTitle>{title}</CardTitle>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<Button color="transparent" id={`${slug}-days-off`}>
-					<Icon name="emoji-sunglasses"/> <tt>{$daysOff}</tt> off
+				<Button color="transparent" id={id('days-off')}>
+					<Icon name="emoji-sunglasses"/> {$daysOff || '∅'} off
 				</Button>
-				<Popover target={`${slug}-days-off`} placement="right" title="🏖 Holidays / vacations?">
+				<Popover target={id('days-off')} placement="right" title="🏖 Holidays / vacations?">
 					<InputGroup>
 						<Input bind:value={$daysOff} type="number" min="0" max="31" />
 						<InputGroupText>days off</InputGroupText>
@@ -66,10 +73,10 @@
 				</Popover>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<Button color="transparent" id={`${slug}-target`}>
+				<Button color="transparent" id={id('target')}>
 					<Icon name="bullseye"/> {$targetH}h
 				</Button>
-				<Popover target={`${slug}-target`} placement="right" title="🎯 Your target">
+				<Popover target={id('target')} placement="right" title="🎯 Your target">
 					<InputGroup>
 						<Input bind:value={$targetH} type="number" min="0" max="200" />
 						<InputGroupText>hours</InputGroupText>
@@ -78,6 +85,7 @@
 			</Col>
 		</Row>
 	</CardHeader>
+
 	<ListGroup>
 		{#if nonBillable}
 			<ListGroupItem class="p-0 border-0">
@@ -104,10 +112,19 @@
 				<tr>
 					<th>Days left:</th>
 					<td>
-						{daysLeft} days
+						<span id={id('days-desc')} class="hover-help">{daysLeft} {plur('day', daysLeft)}</span>
 						<small class="text-muted">
-							(with {weekendCount.total > 0? weekendCount.total/2 : 'no'} weekend{weekendCount.total > 3? 's' : ''}{#if $daysOff}&nbsp;+ {$daysOff} day{$daysOff > 1? 's' : ''} off{/if})
+							(with {weekendCount.weekends? weekendCount.weekends : 'no'} {plur('weekend', weekendCount.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
 						</small>
+
+						<Tooltip target={id('days-desc')}>
+							<ul class="mb-0 text-start ps-3">
+								<li><b>{weekendCount.weekdays}</b> {plur('weekday', weekendCount.weekdays)}</li>
+								<li><b>{weekendCount.saturday}</b> {plur('Saturday', weekendCount.saturday)}</li>
+								<li><b>{weekendCount.sunday}</b> {plur('Sunday', weekendCount.sunday)}</li>
+								<li><b>{$daysOff || 'no'}</b> {plur('day', $daysOff)} off</li>
+							</ul>
+						</Tooltip>
 					</td>
 				</tr>
 			</Table>
