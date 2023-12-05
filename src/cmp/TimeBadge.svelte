@@ -3,12 +3,11 @@ import { s2d } from '$lib/date'
 import { colorScaleFor } from '$lib/fmt'
 import { Badge } from 'sveltestrap'
 
-export let daysLeft
 export let seconds
-const MAX_WORK_PER_DAY = (24 - 8 - 2) * 60*60 //8 hours to sleep, 2 to live
+const MAX_WORK_PER_DAY = (24 - 8 - 2) * 60*60 //8 hours to sleep, 2 to live //TODO make this a setting
 
 </script>
-{#if daysLeft > 2 && seconds <= MAX_WORK_PER_DAY}
+{#if seconds <= MAX_WORK_PER_DAY}
 	<Badge pill class={`bg-scale-${colorScaleFor(seconds)}`}>
 		{s2d(seconds)} - {colorScaleFor(seconds, true)}
 	</Badge>

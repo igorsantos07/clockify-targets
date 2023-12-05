@@ -31,7 +31,7 @@
 
 	const workedHours   = billable + nonBillable
 	const today         = new Date()
-	const considerToday = (today.getHours() < 18)
+	const considerToday = (today.getHours() < 18) //TODO make this a setting
 	const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
 	const weekendCount  = eachDayOfInterval({ start: today, end })
 		.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
@@ -139,15 +139,15 @@
 			<Table style="width:auto" class="mb-1">
 				<tr>
 					<th>Needed hours per day</th>
-					<td><TimeBadge {daysLeft} seconds={perDay} /></td>
+					<td><TimeBadge seconds={perDay} /></td>
 				</tr>
 				<tr>
 					<th>...excluding Sundays</th>
-					<td><TimeBadge {daysLeft} seconds={perDayWoSunday} /></td>
+					<td><TimeBadge seconds={perDayWoSunday} /></td>
 				</tr>
 				<tr>
 					<th>...excluding weekends</th>
-					<td><TimeBadge {daysLeft} seconds={perDayWoWeekend} /></td>
+					<td><TimeBadge seconds={perDayWoWeekend} /></td>
 				</tr>
 			</Table>
 		</ListGroupItem>
