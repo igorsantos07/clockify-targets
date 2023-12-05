@@ -5,6 +5,16 @@
 @import "~/bootstrap/scss/bootstrap";
 @import "bs_overrides";
 
+#corner-nav {
+  flex-direction: row;
+  --bs-nav-link-padding-x: 0.25rem;
+
+  .nav-link i[class*=bi-] {
+    display: flex; //makes the icon centralized vertically
+    text-decoration: none; //not sure why setting display:flex causes the underline to show up, but anyway...
+  }
+}
+
 a {
   text-decoration: none;
   &:hover { text-decoration: underline }
@@ -41,6 +51,8 @@ header {
     display: inline-flex !important;
   }
   #profile {
+    display: flex;
+    align-items: center;
     .dropdown-toggle {
       padding-top: 0;
       padding-bottom: 0;

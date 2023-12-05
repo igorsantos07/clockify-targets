@@ -74,7 +74,7 @@
 			</Collapse>
 		</Col>
 		<Col xs="auto">
-			<Nav navbar>
+			<Nav navbar id="corner-nav">
 				{#if !$isAuth || !$user}
 					<NavItem>
 						<NavLink href="/api-key">
@@ -88,6 +88,7 @@
 							<Icon name={$settings.hideMoney? 'eye-slash-fill' : 'eye-fill'} />
 						</NavLink>
 					</NavItem>
+
 					<Dropdown nav inNavbar id="profile">
 						<DropdownToggle nav caret>
 							<img src={$user.profilePicture} alt="avatar" />
