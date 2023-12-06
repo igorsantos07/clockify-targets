@@ -43,8 +43,8 @@ const modelPersistance = (key, initial) => basePersisted(key, initial, {
 export const _store = {
 	API_KEY : generalPersistance('API_KEY', ''),
 	loading : memoryPersistance(false),
-	/** @type Settings */
-	settings: modelPersistance('settings', new Settings({ hideMoney: true })),
-	/** @type User */
+	/** @type SvelteStore<Settings> */
+	settings: modelPersistance('settings', new Settings()),
+	/** @type SvelteStore<?User> */
 	user: modelPersistance('user', undefined),
 }

@@ -46,8 +46,8 @@
 							<Icon name="calendar"/> Periods
 						</NavLink>
 					</NavItem>
-					<NavItem> <!--TODO-->
-						<NavLink disabled={true || !$isAuth} href="/settings">
+					<NavItem>
+						<NavLink disabled={!$isAuth} href="/settings">
 							<Icon name="tools"/> Settings
 						</NavLink>
 					</NavItem>

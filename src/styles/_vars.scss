@@ -32,6 +32,8 @@ $title-color           : $body-color;
 //$font-weight-semibold : 500; //default for titles and... maybe something else? but 500 doesn't work unless, I guess, we import this specific font weight file?
 $border-color          : $dark;
 $border-radius         : 0;
+$border-radius-sm      : 0;
+$border-radius-lg      : 0;
 $modal-backdrop-bg     : rgba(255, 255, 255, 0.2);
 $offcanvas-backdrop-bg : $modal-backdrop-bg;
 
@@ -41,6 +43,9 @@ $btn-color         : #FEFEFE; //not applying... why?
 $btn-font-size     : 0.75rem;
 $btn-padding-x     : 0.5rem;
 $btn-padding-y     : math.div($btn-padding-x, 2);
+
+//disabled inputs have the same colors as working ones, but get 60% of opacity at _bs_overrides.scss
+$input-disabled-bg    : var(--bs-body-bg);
 
 $card-cap-bg      : $dark;
 $card-title-color : $title-color;
@@ -55,6 +60,8 @@ $popover-border-color : $popover-header-bg;
 $tooltip-opacity      : 1;
 $tooltip-border-radius: 0.5rem;
 $tooltip-color        : $body-secondary-color;
+
+$form-select-indicator-color: $body-color;
 
 @import "~/bootstrap/scss/functions";
 @import "~/bootstrap/scss/variables";
