@@ -1,0 +1,5 @@
+[*]
+indent_style = tab
+indent_size = 2
+trim_trailing_whitespace = true
+ij_javascript_align_var_statements = 2
