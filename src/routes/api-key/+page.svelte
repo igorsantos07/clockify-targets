@@ -4,7 +4,8 @@ import Auth from '$lib/Auth.js'
 import { _store, get } from '$data/_store'
 import User from '$data/User'
 import Linput from '$cmp/Linput.svelte'
-import API from '$lib/API.js'
+import API from '$lib/API'
+import Title from '$cmp/Title.svelte'
 
 const auth = new Auth()
 const key = auth.key
@@ -21,6 +22,8 @@ function doClear() {
 }
 </script>
 
+
+<Title page="API key & login"/>
 <Card>
 	<form on:submit|preventDefault={doSave}>
 		<CardHeader>
