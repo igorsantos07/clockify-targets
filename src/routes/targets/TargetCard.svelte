@@ -16,7 +16,7 @@
 	import TimeBadge from '$cmp/TimeBadge.svelte'
 	import plur from 'plur'
 
-	export let billable = null
+	export let billable    = 0
 	export let nonBillable = 0
 	export let end
 	export let title
@@ -61,24 +61,19 @@
 				<CardTitle>{title}</CardTitle>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<Button color="transparent" id={id('days-off')}>
-					<Icon name="emoji-sunglasses"/> {$daysOff || '∅'} off
-				</Button>
+				<Button color="transparent" id={id('days-off')}>🏖 {$daysOff || '∅'}</Button>
 				<Popover target={id('days-off')} placement="right" title="🏖 Holidays / vacations?">
 					<InputGroup>
-						<Input bind:value={$daysOff} type="number" min="0" max="31" />
+						<Input class="w-auto" bind:value={$daysOff} type="number" min="0" max="31" />
 						<InputGroupText>days off</InputGroupText>
 					</InputGroup>
 					<FormText>Must be reduced once each day off gets spent.</FormText>
 				</Popover>
-			</Col>
-			<Col xs="auto" class="side-btn">
-				<Button color="transparent" id={id('target')}>
-					<Icon name="bullseye"/> {$targetH}h
-				</Button>
+
+				<Button color="transparent" id={id('target')}>🎯 {$targetH}h</Button>
 				<Popover target={id('target')} placement="right" title="🎯 Your target">
 					<InputGroup>
-						<Input bind:value={$targetH} type="number" min="0" max="200" />
+						<Input class="w-auto" bind:value={$targetH} type="number" min="0" max="200"/>
 						<InputGroupText>hours</InputGroupText>
 					</InputGroup>
 				</Popover>

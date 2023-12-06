@@ -9,8 +9,20 @@
   flex-direction: row;
   --bs-nav-link-padding-x: 0.25rem;
 
-  .nav-link i[class*=bi-] {
-    display: flex; //makes the icon centralized vertically
+  .nav-item {
+    height: 2.5rem; //already the default for text-based links, but icons need this
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    &.emoji {
+      text-decoration: none;
+      font-size: 1.25rem;
+    }
+  }
+  .nav-link i[class|=bi] {
+    display: inline-flex; //makes the icon centralized vertically
     text-decoration: none; //not sure why setting display:flex causes the underline to show up, but anyway...
   }
 }
@@ -20,7 +32,7 @@ a {
   &:hover { text-decoration: underline }
 }
 
-a > i[class^=bi-] {
+a > i[class|=bi] {
   margin-right: 0.25rem;
 }
 
@@ -63,4 +75,10 @@ header {
     }
   }
 
+}
+
+main {
+  .card:last-of-type {
+    margin-bottom: 0 !important;
+  }
 }

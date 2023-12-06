@@ -55,6 +55,19 @@
   }
 }
 
+input.w-auto {
+  flex-grow: 0 !important;
+  @include media-breakpoint-down(sm) { //reverts to the standard, so it's full-width on narrow screens
+    flex-grow: 1 !important;
+    width: 1% !important;
+  }
+}
+select.w-auto {
+  @include media-breakpoint-down(sm) { //reverts to the standard, so it's full-width on narrow screens
+    width: 100% !important;
+  }
+}
+
 .modal-backdrop, .offcanvas-backdrop {
   backdrop-filter: blur(2px);
 }
