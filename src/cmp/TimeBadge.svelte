@@ -4,13 +4,8 @@ import { colorScaleFor } from '$lib/fmt'
 import { Badge } from 'sveltestrap'
 
 export let seconds
-const MAX_WORK_PER_DAY = (24 - 8 - 2) * 60*60 //8 hours to sleep, 2 to live //TODO make this a setting
-
 </script>
-{#if seconds <= MAX_WORK_PER_DAY}
-	<Badge pill class={`bg-scale-${colorScaleFor(seconds)}`}>
-		{s2d(seconds)} - {colorScaleFor(seconds, true)}
-	</Badge>
-{:else}
-	<Badge pill color="dark" class="text-danger">NO CAN DO ({(seconds/60/60).toFixed(1)}h)</Badge>
-{/if}
+
+<Badge pill class={`py-2 bg-scale-${colorScaleFor(seconds)}`}>
+	{s2d(seconds)} - {colorScaleFor(seconds, true)}
+</Badge>

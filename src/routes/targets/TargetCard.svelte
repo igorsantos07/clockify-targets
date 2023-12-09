@@ -2,60 +2,66 @@
   th {
     padding     : 0.375rem 0.5rem 0.375rem 0;
     font-weight : normal;
+    width       : 1px;
+    white-space : nowrap;
   }
   td > * { padding: 0 } /* wtf bootstrap, why add padding to anything inside table cells? */
 </style>
 
 <script>
-	import { Alert, Button, Card, CardHeader, CardTitle, Col, FormText, Icon, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Table, Tooltip } from 'sveltestrap'
-	import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
-	import { colorScaleFor, s2$ } from '$lib/fmt'
-	import { s2d, s2h } from '$lib/date'
-	import { _store } from '$data/_store'
-	import { persisted } from 'svelte-local-storage-store'
-	import TimeBadge from '$cmp/TimeBadge.svelte'
-	import plur from 'plur'
+import { Alert, Button, Card, CardHeader, CardTitle, Col, FormText, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Tooltip } from 'sveltestrap'
+import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
+import { colorScaleFor, s2$ } from '$lib/fmt'
+import { s2d, s2h } from '$lib/date'
+import { _store } from '$data/_store'
+import { persisted } from 'svelte-local-storage-store'
+import TimeBadge from '$cmp/TimeBadge.svelte'
+import plur from 'plur'
+import Muted from '$cmp/Muted.svelte'
 
-	export let billable    = 0
-	export let nonBillable = 0
-	export let end
-	export let title
+export let billable    = 0
+export let nonBillable = 0
+export let end
+export let title
 
-	const settings = _store.settings
-	$: showOff = !$settings.hideMoney
+const settings = _store.settings
+$: showOff = !$settings.hideMoney
 
-	function id(name) {
-		return `${id.slug}-${name}`
-	}
-	id.slug = title.replace(' ', '-')
+function id(name) {
+	return `${id.slug}-${name}`
+}
+id.slug = title.replace(' ', '-')
 
-	const workedHours   = billable + nonBillable
-	const today         = new Date()
-	const considerToday = (today.getHours() < 18) //TODO make this a setting
-	const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
-	const weekendCount  = eachDayOfInterval({ start: today, end })
-		.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
-		.reduce((count, dow) => {
-			if (dow == 6) { count.days++; count.saturday++ }
-			if (dow == 7) { count.days++; count.sunday++ }
-			return count
-		}, { saturday: 0, sunday: 0, days: 0 })
-	weekendCount.weekdays = daysLeft - weekendCount.days
-	weekendCount.weekends = weekendCount.days / 2
+const workedHours   = billable + nonBillable
+const today         = new Date()
+const considerToday = (today.getHours() < 18) //TODO make this a setting
+const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
+const weekendCount  = eachDayOfInterval({ start: today, end })
+	.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
+	.reduce((count, dow) => {
+		if (dow == 6) { count.days++; count.saturday++ }
+		if (dow == 7) { count.days++; count.sunday++ }
+		return count
+	}, { saturday: 0, sunday: 0, days: 0 })
+weekendCount.weekdays = daysLeft - weekendCount.days
+weekendCount.weekends = weekendCount.days / 2
 
-	let daysOff = persisted(id('daysOff'), 0)
-	let targetH = persisted(id('target'), 36)
-	$: targetS = $targetH * 60 * 60
-	$: leftS = targetS - workedHours
+let daysOff = persisted(id('daysOff'), 0)
+let targetH = persisted(id('target'), 36)
+$: targetS  = $targetH * 60 * 60
+$: leftS    = targetS - workedHours
 
-	//TODO use user.settings.myStartOfDay
-	$: perDay = leftS / Math.max(daysLeft - $daysOff, 1)
-	$: perDayWoSunday = leftS / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1)
-	$: perDayWoWeekend = leftS / Math.max(daysLeft - weekendCount.days - $daysOff, 1)
+//TODO use user.settings.myStartOfDay
+$: perDays = {
+	7: leftS / Math.max(daysLeft - $daysOff, 1),
+	6: leftS / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1),
+	5: leftS / Math.max(daysLeft - weekendCount.days - $daysOff, 1),
+}
+$: perDaysTarget = perDays[$settings.schedule.colorize]
 </script>
 
 <Card class="mb-3">
-	<CardHeader class={`bg-scale-${colorScaleFor(perDayWoSunday)}`}>
+	<CardHeader class={`bg-scale-${colorScaleFor(perDaysTarget)}`}>
 		<Row>
 			<Col>
 				<CardTitle>{title}</CardTitle>
@@ -91,26 +97,26 @@
 		{/if}
 
 		<ListGroupItem class="pb-0">
-			<Table style="width:auto" class="mb-0">
+			<table>
 				<tr>
 					<td colspan="2">
 						<big>
-							<u><b><tt>{s2d(workedHours)}</tt></b> so far</u>
-							{#if showOff}({s2$(workedHours)} out of {s2$(targetS)}){/if}
+							<b><tt>{s2d(workedHours)}</tt></b> so far
+							{#if showOff}<Muted>({s2$(workedHours)} out of {s2$(targetS)})</Muted>{/if}
 						</big>
 					</td>
 				</tr>
 				<tr>
 					<th>Hours left:</th>
-					<td><tt>{s2d(leftS)}</tt> {#if showOff}({s2$(leftS)}!!!){/if}</td>
+					<td><tt>{s2d(leftS)}</tt> {#if showOff}<Muted>({s2$(leftS)}!!!)</Muted>{/if}</td>
 				</tr>
 				<tr>
 					<th>Days left:</th>
 					<td>
 						<span id={id('days-desc')} class="hover-help">{daysLeft} {plur('day', daysLeft)}</span>
-						<small class="text-muted">
-							(with {weekendCount.weekends? weekendCount.weekends : 'no'} {plur('weekend', weekendCount.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
-						</small>
+						<Muted>
+							(<span class="d-none d-sm-inline">with </span>{weekendCount.weekends? weekendCount.weekends : 'no'} {plur('weekend', weekendCount.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
+						</Muted>
 
 						<Tooltip target={id('days-desc')}>
 							<ul class="mb-0 text-start ps-3">
@@ -122,29 +128,24 @@
 						</Tooltip>
 					</td>
 				</tr>
-			</Table>
+			</table>
 		</ListGroupItem>
 
 		<ListGroupItem class="p-0">
-			<Progress animated class={`bg-scale-${colorScaleFor(perDayWoSunday)}`} value={s2h(workedHours)}
-			          max={$targetH}>{s2h(workedHours) / $targetH > 0.15 ? colorScaleFor(perDayWoSunday, true) : '!!'}</Progress>
+			<Progress animated class={`bg-scale-${colorScaleFor(perDaysTarget)}`} value={s2h(workedHours)} max={$targetH}>
+				{s2h(workedHours) / $targetH > 0.15 ? colorScaleFor(perDaysTarget, true) : '!!'}
+			</Progress>
 		</ListGroupItem>
 
-		<ListGroupItem class="pb-0">
-			<Table style="width:auto" class="mb-1">
-				<tr>
-					<th>Needed hours per day</th>
-					<td><TimeBadge seconds={perDay} /></td>
-				</tr>
-				<tr>
-					<th>...excluding Sundays</th>
-					<td><TimeBadge seconds={perDayWoSunday} /></td>
-				</tr>
-				<tr>
-					<th>...excluding weekends</th>
-					<td><TimeBadge seconds={perDayWoWeekend} /></td>
-				</tr>
-			</Table>
+		<ListGroupItem>
+			<table>
+				{#each [[7,'➐'],[6,'➏'],[5,'➎']] as [numDays, numBadge]}
+					<tr class:d-none={!$settings.schedule.show[numDays]}>
+						<th>{numBadge} Needed hours per day</th>
+						<td><TimeBadge seconds={perDays[numDays]}/></td>
+					</tr>
+				{/each}
+			</table>
 		</ListGroupItem>
 	</ListGroup>
 </Card>

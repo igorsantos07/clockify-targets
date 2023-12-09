@@ -1,0 +1,41 @@
+$color-scale: (
+        n1: $cyan,
+        0: $green,
+        1: $yellow,
+        2: $orange,
+        3: $red,
+        4: $pink,
+        5: $purple,
+        6: $dark
+);
+@each $level, $color in $color-scale {
+  .text-scale-#{$level} { color: $color !important; }
+  .bg-scale-#{$level} {
+    color: color-contrast($color) !important;
+    background-color: $color !important;
+    .card-title, .btn { color: inherit !important; }
+    &.progress {
+      background-color: $dark-lighter !important;
+      .progress-bar {
+        color: color-contrast($color);
+        background-color: $color !important;
+      }
+    }
+  }
+  //.text-bg-scale-#{$level} { background-color: $color; }
+}
+.bg-scale-6 {
+  color: $danger !important;
+  &.badge { border: 1px solid $danger !important; }
+  &.card-header {
+    @include gradient-striped($angle: 40deg); //no clue why the default 45deg won't fit... maybe because of the bg-size? if it breaks somewhere else, use 90deg and move on
+    background-color: $danger-text-emphasis !important;
+    background-size: 3rem;
+    background-position-x: 0;
+    color: $white !important;
+  }
+  &.progress .progress-bar {
+    background-color: $danger-text-emphasis !important;
+    animation-duration: 0.3s;
+  }
+}

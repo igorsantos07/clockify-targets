@@ -69,5 +69,13 @@ export function colorScaleFor(seconds, asText = false) {
 	if (hours < 12) {
 		return asText? 'terrible!!' : 4;
 	}
-	return asText? 'seriously?!' : 5;
+	if (hours <= (24 - 8 - 2)) { //8 hours to sleep, 2 to live //TODO make this a setting)
+		return asText? 'seriously?!' : 5;
+	}
+	return asText? rand(['NO CAN DO', 'HAHAHA', 'HA HA', '🥲 🥲 🥲', '🤡 🤡 🤡', '😂 😂 😂', '💸 💸 💸']) : 6;
+}
+
+function rand(array) {
+	const index = Math.floor(Math.random() * array.length)
+	return array[index]
 }

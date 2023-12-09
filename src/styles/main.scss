@@ -4,6 +4,7 @@
 //TODO this should definitely be tree-shakeable!!!
 @import "~/bootstrap/scss/bootstrap";
 @import "bs_overrides";
+@import "severity_scale";
 
 #corner-nav {
   flex-direction: row;

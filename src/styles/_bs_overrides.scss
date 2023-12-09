@@ -7,6 +7,8 @@
 
   &-transparent {
     background-color: transparent;
+    &:hover { background-color: rgba($white, 0.2) }
+    &:active { background-color: rgba($white, 0.3) }
   }
 }
 
@@ -29,6 +31,7 @@
         left: 0;
       }
       .btn {
+        margin-right: -0.25rem; //why
         height: $line-height-base + ($card-cap-padding-y*2);
         min-width: $line-height-base + ($card-cap-padding-y*2);
         border-width: 0;
@@ -83,30 +86,4 @@ select.w-auto {
 
 .modal-backdrop, .offcanvas-backdrop {
   backdrop-filter: blur(2px);
-}
-
-$color-scale: (
-  n1: $cyan,
-  0: $green,
-  1: $yellow,
-  2: $orange,
-  3: $red,
-  4: $pink,
-  5: $purple
-);
-@each $level, $color in $color-scale {
-  .text-scale-#{$level} { color: $color !important; }
-  .bg-scale-#{$level} {
-    color: color-contrast($color) !important;
-    background-color: $color !important;
-    .card-title, .btn { color: inherit !important; }
-    &.progress {
-      background-color: $dark-lighter !important;
-      .progress-bar {
-        color: color-contrast($color);
-        background-color: $color !important;
-      }
-    }
-  }
-  //.text-bg-scale-#{$level} { background-color: $color; }
 }
