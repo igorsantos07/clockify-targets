@@ -20,13 +20,16 @@
 </script>
 
 <FormGroup>
-	{#if label}<Label for={id} disabled={$$props.disabled}>{label}</Label>{/if}
-	<InputGroup>
+	{#if label}<Label for={id} disabled={$$props.disabled}>{label}:</Label>{/if}
+
+	<InputGroup class={prefix || suffix? '' : 'd-block'}><!-- d-block so it supposedly won't force wide inputs when no affixes are in use -->
 		{#if prefix}<InputGroupText>{prefix}</InputGroupText>{/if}
 		{#if plainText} <!-- https://github.com/bestguy/sveltestrap/issues/582 -->
 			<input on:input on:change bind:value={value} {...$$restProps} {id} class={`form-control-plaintext ${classes}`} readonly/>
 		{:else}
-			<Input on:input on:change bind:value={value} {...$$restProps} {id} class={classes}/>
+			<Input on:input on:change bind:value={value} {...$$restProps} {id} class={classes}>
+				<slot/>
+			</Input>
 		{/if}
 		{#if suffix}<InputGroupText>{suffix}</InputGroupText>{/if}
 	</InputGroup>
