@@ -47,10 +47,11 @@ $btn-padding-y     : math.div($btn-padding-x, 2);
 //disabled inputs have the same colors as working ones, but get 60% of opacity at _bs_overrides.scss
 $input-disabled-bg    : var(--bs-body-bg);
 
-$card-cap-bg      : $dark;
-$card-title-color : $title-color;
-$card-title-spacer-y: 0;
-$card-bg          : $dark-light;
+$card-cap-bg         : $dark;
+$card-title-color    : $title-color;
+$card-title-spacer-y : 0;
+$card-bg             : $dark-light;
+$list-group-bg       : $dark-light;
 
 $navbar-padding-y: 0.375rem;
 //$nav-link-color: #90a4ae;

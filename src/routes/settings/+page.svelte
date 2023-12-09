@@ -1,58 +1,10 @@
 <script>
-import { Card, CardBody, CardHeader, CardTitle, Col, FormGroup, Input, Label, Row } from 'sveltestrap'
-import { _store } from '$data/_store'
-import Linput from '$cmp/Linput.svelte'
-import { mfd2, moneyLong } from '$lib/fmt'
-import { writable } from 'svelte/store'
 import Title from '$cmp/Title.svelte'
-
-const settings = _store.settings
-
-let rate = writable(mfd2($settings.exchange.rate))
-
-function changeRate() {
-	$settings.exchange.rate = parseFloat($rate) //saves the raw number...
-	$rate                   = mfd2($rate) //...but displays the leading zero
-}
-
-$: disableEx = $settings.currency == 'USD'
-$: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee / 100)))
+import Cash from './Cash.svelte'
+import Schedule from './Schedule.svelte'
 </script>
 
 <Title page="Settings"/>
-<Card>
-	<CardHeader>
-		<CardTitle>💰 Cash</CardTitle>
-	</CardHeader>
-	<CardBody>
-		<Linput label="Your hourly rate, in dollars" prefix="$" type="number" bind:value={$settings.hourlyRate} required/>
-		<FormGroup>
-			<Label>Your local currency</Label>
-			<Input type="select" bind:value={$settings.currency} required class="w-auto">
-				<option value="USD">🇺🇸 USD</option>
-				<option value="BRL">🇧🇷 BRL</option>
-				<option value="EUR">🇪🇺 EUR</option>
-				<option value="GBP">🇬🇧 GBP</option>
-			</Input>
-		</FormGroup>
-		<Row>
-			<Col sm="12" md="5">
-				<Linput label="Exchange rate" disabled={disableEx}
-				        prefix={disableEx? '' : `1 USD = ${$settings.currency}`} type="number"
-				        bind:value={$rate} on:change={changeRate} required step="0.01"
-				        help="This is the market rate - you can get it from Google, for instance."/>
-			</Col>
-			<Col sm="12" md="5">
-				<Linput label="Exchange fee" disabled={disableEx} suffix="%" type="number"
-				        bind:value={$settings.exchange.fee} required step="0.01"
-				        help='Also known as "spread" - in finance, that is difference between the market rate and the rate you actually get.'/>
-			</Col>
-			{#key disableEx}
-				<Col sm="12" md="2" class="mb-n3 {disableEx? 'invisible' : 'visible'}">
-					<!-- n3 counteracts FormGroup's margin, since it's at the bottom of a Column, not a CardBody -->
-					<Linput label="💱 Actual rate" value={actualRate} plainText sizing="lg" class="fw-bold"/>
-				</Col>
-			{/key}
-		</Row>
-	</CardBody>
-</Card>
+
+<Cash/>
+<Schedule/>
