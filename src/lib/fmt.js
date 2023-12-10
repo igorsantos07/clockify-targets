@@ -17,8 +17,7 @@ _store.settings.subscribe(({ hourlyRate, currency, exchange, schedule }) => {
 	MFD2        = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2 }) //forced to EN, so it fits input[type=number]
 	CURRENCY    = new Intl.NumberFormat(NUM_LOCALE, { style: 'currency', currency })
 	CURRENCY_LG = new Intl.NumberFormat(NUM_LOCALE, { style: 'currency', currency, minimumFractionDigits: 4 })
-	PERCENT     = new Intl.NumberFormat(NUM_LOCALE, { style: 'percent', maximumFractionDigits: 3 })
-	//TODO create a percent()
+	PERCENT     = new Intl.NumberFormat(NUM_LOCALE, { style: 'percent', maximumFractionDigits: 1 })
 
 	HOURLY_RATE   = hourlyRate
 	EXCHANGE_RATE = currency == 'USD'? 1 : (exchange.rate * (1 - (exchange.fee / 100)))
@@ -40,6 +39,8 @@ export const mfd2 = number => MFD2.format(number)
  * @returns {string}
  */
 export const money = number => CURRENCY.format(number)
+
+export const pct = number => PERCENT.format(number)
 
 /**
  * Formats the number in the selected currency (from {@link Settings} with 4 fraction digits.

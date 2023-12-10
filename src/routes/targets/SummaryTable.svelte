@@ -7,7 +7,7 @@ import Muted from '$cmp/Muted.svelte'
 import { _store } from '$data/_store'
 
 export let idGen
-export let workedHours
+export let workedSecs
 export let weekendCount
 export let daysOff, daysLeft
 export let targetSecs, leftSecs
@@ -21,10 +21,10 @@ $: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.excha
 	<tr>
 		<td colspan="2">
 			<big>
-				<b><tt>{s2d(workedHours)}</tt></b> so far
+				<b><tt>{s2d(workedSecs)}</tt></b> so far
 				{#if showOff}
 					{#key moneyUpdaterKey}
-						<Muted>({s2$(workedHours)} out of {s2$(targetSecs)})</Muted>
+						<Muted>({s2$(workedSecs)} out of {s2$(targetSecs)})</Muted>
 					{/key}
 				{/if}
 			</big>

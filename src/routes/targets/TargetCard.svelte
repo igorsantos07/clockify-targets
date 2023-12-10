@@ -1,18 +1,7 @@
-<style lang="scss">
-  th {
-    padding     : 0.375rem 0.5rem 0.375rem 0;
-    font-weight : normal;
-    width       : 1px;
-    white-space : nowrap;
-  }
-  td > * { padding: 0 } /* wtf bootstrap, why add padding to anything inside table cells? */
-</style>
-
 <script>
-import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Progress, Row } from 'sveltestrap'
+import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from 'sveltestrap'
 import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
 import { colorScaleFor } from '$lib/fmt'
-import { s2h } from '$lib/date'
 import { _store } from '$data/_store'
 import { persisted } from 'svelte-local-storage-store'
 import TimeBadge from '$cmp/TimeBadge.svelte'
@@ -20,22 +9,22 @@ import NonBillableAlert from './NonBillableAlert.svelte'
 import CornerButtons from './CornerButtons.svelte'
 import SummaryTable from './SummaryTable.svelte'
 import Settings from '$data/Settings'
+import ProgressBars from './ProgressBars.svelte'
 
 export let billable    = 0
 export let nonBillable = 0
-export let end
+export let start, end
 export let title
-
-const SMALL_PROGRESS_BAR = 0.15
 
 function id(name) {
 	return `${id.slug}-${name}`
 }
 id.slug = title.replace(' ', '-')
 
-const workedHours   = billable + nonBillable
+const workedSecs    = billable + nonBillable
 const today         = new Date()
 const considerToday = (today.getHours() < 18) //TODO make this a setting
+const totalDays     = (differenceInDays(end, start) + 1)
 const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
 const weekendCount  = eachDayOfInterval({ start: today, end })
 	.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
@@ -50,7 +39,7 @@ weekendCount.weekends = weekendCount.days / 2
 let daysOff = persisted(id('daysOff'), 0)
 let targetH = persisted(id('target'), 36)
 $: targetSecs = $targetH * 60 * 60
-$: leftSecs = targetSecs - workedHours
+$: leftSecs   = targetSecs - workedSecs
 
 const settings = _store.settings
 
@@ -79,13 +68,11 @@ $: perDaysTarget = perDays[$settings.schedule.colorize]
 		<NonBillableAlert {nonBillable}/>
 
 		<ListGroupItem class="pb-0">
-			<SummaryTable idGen={id} {daysOff} {daysLeft} {weekendCount} {targetSecs} {leftSecs} {workedHours}/>
+			<SummaryTable idGen={id} {daysOff} {daysLeft} {weekendCount} {targetSecs} {leftSecs} {workedSecs}/>
 		</ListGroupItem>
 
 		<ListGroupItem class="p-0">
-			<Progress animated class={`bg-scale-${colorScaleFor(perDaysTarget)}`} value={s2h(workedHours)} max={$targetH}>
-				{s2h(workedHours) / $targetH > SMALL_PROGRESS_BAR? colorScaleFor(perDaysTarget, true) : '!!'}
-			</Progress>
+			<ProgressBars idGen={id} {perDaysTarget} {daysLeft} {targetH} {totalDays} {workedSecs}/>
 		</ListGroupItem>
 
 		<ListGroupItem>

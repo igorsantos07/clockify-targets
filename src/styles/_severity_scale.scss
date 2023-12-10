@@ -15,7 +15,7 @@ $color-scale: (
     background-color: $color !important;
     .card-title, .btn { color: inherit !important; }
     &.progress {
-      background-color: $dark-lighter !important;
+      background-color: var(--bs-progress-bg) !important; //overrides bg-scale above
       .progress-bar {
         color: color-contrast($color);
         background-color: $color !important;

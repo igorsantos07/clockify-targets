@@ -28,6 +28,7 @@ $font-family-sans-serif: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Helvet
 $body-bg               : #263238;
 $body-color            : #c6d2d9;
 $body-secondary-color  : #90a4ae;
+$body-secondary-bg     : $dark-lighter; //used in <progress>
 $body-tertiary-bg      : $dark-light; //used in input-group-text
 $title-color           : $body-color;
 //$font-weight-semibold : 500; //default for titles and... maybe something else? but 500 doesn't work unless, I guess, we import this specific font weight file?

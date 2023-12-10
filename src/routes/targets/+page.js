@@ -31,32 +31,38 @@ export async function load({ params }) {
 	/** @type User */
 	const user = get(_store.user)
 	const today = new Date()
+
+	const sow = week.start()
 	const eow = week.end()
+
+	const som = startOfMonth(today)
 	const eom = endOfMonth(today)
-	const sof = today.getDate() <= 14 ? setDate(today, 1) : setDate(today, 15)
-	const eof = today.getDate() <= 14 ? setDate(today, 15) : eom //TODO why isn't the first fortnight ending on the 14th?
+
+	const sof = startOfDay(today.getDate() <= 14 ? setDate(today, 1) : setDate(today, 15))
+	const eof = today.getDate() <= 14 ? endOfDay(setDate(today, 14)) : eom
+
 	const { data: weekly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
-			start: formatISO(startOfDay(week.start())),
+			start: formatISO(startOfDay(sow)),
 			end  : formatISO(endOfDay(eow)),
 		},
 	})
 	const { data: fortnightly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
 			start: formatISO(startOfDay(sof)),
-			end  : formatISO(endOfDay(eof)),
+			end  : formatISO(eof),
 		},
 	})
 	const { data: monthly } = await API.get(user.baseURL + 'time-entries', { //FIXME error handling
 		params: {
-			start: formatISO(startOfMonth(today)),
+			start: formatISO(som),
 			end  : formatISO(endOfDay(eom)),
 		},
 	})
 
 	return {
-		weekly     : weekly.reduce(sumDurations, new TimeSummary(eow)),
-		fortnightly: fortnightly.reduce(sumDurations, new TimeSummary(eof)),
-		monthly    : monthly.reduce(sumDurations, new TimeSummary(eom)),
+		weekly     : weekly.reduce(sumDurations, new TimeSummary(sow, eow)),
+		fortnightly: fortnightly.reduce(sumDurations, new TimeSummary(sof, eof)),
+		monthly    : monthly.reduce(sumDurations, new TimeSummary(som, eom)),
 	}
 }
