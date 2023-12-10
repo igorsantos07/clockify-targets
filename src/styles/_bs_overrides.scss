@@ -61,6 +61,7 @@
     //margin-bottom: 1rem; //original margin from form-floating
   }
 }
+
 @mixin pressed-thumb { //for some odd reason, it's not possible to set webkit+moz in a single rule
   $pressed: 0.9;
   width: $form-range-thumb-width * $pressed;
@@ -68,6 +69,10 @@
 }
 .form-range::-webkit-slider-thumb:active { @include pressed-thumb }
 .form-range::-moz-range-thumb:active { @include pressed-thumb }
+
+.form-switch .form-check-input:not(:checked) {
+  //background-color: $darkish;
+}
 
 .form-control:disabled,
 .form-label[disabled=true], .form-text[disabled=true] /* these only happens on Linput */ {

@@ -21,9 +21,10 @@ function id(name) {
 }
 id.slug = title.replace(' ', '-')
 
+const settings      = _store.settings
 const workedSecs    = billable + nonBillable
 const today         = new Date()
-const considerToday = (today.getHours() < 18) //TODO make this a setting
+const considerToday = (today.getHours() < $settings.schedule.endOfDay.split(':')[0])
 const totalDays     = (differenceInDays(end, start) + 1)
 const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
 const weekendCount  = eachDayOfInterval({ start: today, end })
@@ -40,8 +41,6 @@ let daysOff = persisted(id('daysOff'), 0)
 let targetH = persisted(id('target'), 36)
 $: targetSecs = $targetH * 60 * 60
 $: leftSecs   = targetSecs - workedSecs
-
-const settings = _store.settings
 
 //TODO use user.settings.myStartOfDay
 $: perDays = {

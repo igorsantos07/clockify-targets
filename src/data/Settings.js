@@ -19,5 +19,6 @@ export default class Settings extends Model {
 		colorize     : '5', //should work as a number, but I guess this is another Svelte bug?
 		show         : [],
 		maxDailyHours: 12,
+		endOfDay     : 16,
 	}
 }

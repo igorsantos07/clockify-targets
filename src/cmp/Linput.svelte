@@ -64,7 +64,7 @@ function onCheck({ target: { checked }}) {
 				{#if $$slots.label}<slot name="label"/>{:else}{label}:{/if}
 			</Label>
 		{/if}
-		<InputGroup class={prefix || suffix? '' : 'd-block'}><!-- d-block so it supposedly won't force wide inputs when no affixes are in use -->
+		<InputGroup class={type == 'select'? 'd-block' : ''}><!-- d-block so it won't force-wide special snowflakes -->
 			{#if prefix}<InputGroupText>{prefix}</InputGroupText>{/if}
 			{#if plainText} <!-- https://github.com/bestguy/sveltestrap/issues/582 -->
 				<input on:change on:input bind:value {...$$restProps} {...{ type }} {id} class={`form-control-plaintext ${classes}`} readonly/>

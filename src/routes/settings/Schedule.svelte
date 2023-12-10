@@ -42,7 +42,7 @@ let isOpen = false
 				<svelte:fragment slot="label">
 					📈 Maximum hours per day: <Badge pill color="info">{$settings.schedule.maxDailyHours}h</Badge>
 				</svelte:fragment>
-				<svelte:fragment slot="help">Any average over this amount will show a <i>very bad</i> status.</svelte:fragment>
+				<svelte:fragment slot="help">Averages over this amount will display a <i>very bad™</i> status.</svelte:fragment>
 			</Linput>
 
 			<Muted>
@@ -55,6 +55,13 @@ let isOpen = false
 					{/each}
 				</Collapse>
 			</Muted>
+		</ListGroupItem>
+
+		<ListGroupItem>
+			<Linput type="time" step={60*60*1000} bind:value={$settings.schedule.endOfDay}>
+				<svelte:fragment slot="label">At what time do you "stop planning" your day?</svelte:fragment>
+				<svelte:fragment slot="help">After this time we won't consider today in the amount of days when calculating your averages.</svelte:fragment>
+			</Linput>
 		</ListGroupItem>
 	</ListGroup>
 </Card>

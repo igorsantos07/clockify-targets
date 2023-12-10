@@ -6,7 +6,7 @@ $color-scale: (
         3: $red,
         4: $pink,
         5: $purple,
-        6: $dark
+        6: $darkest
 );
 @each $level, $color in $color-scale {
   .text-scale-#{$level} { color: $color !important; }

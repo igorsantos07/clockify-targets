@@ -28,7 +28,7 @@ $: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee
 		</ListGroupItem>
 
 		<ListGroupItem>
-			<Linput type="select" label="Your local currency" bind:value={$settings.currency} class="w-auto" id="currency">
+			<Linput type="select" label="Your local currency" bind:value={$settings.currency} id="currency">
 				<option value="USD">🇺🇸 USD</option>
 				<option value="BRL">🇧🇷 BRL</option>
 				<option value="EUR">🇪🇺 EUR</option>
@@ -40,7 +40,7 @@ $: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee
 					<Linput label="Exchange rate" disabled={disableEx}
 					        prefix={disableEx? '' : `1 USD = ${$settings.currency}`} type="number"
 					        bind:value={$rate} on:change={changeRate} step="0.01"
-					        help="This is the market rate - you can get it from Google, for instance."/>
+					        help="The market rate - you can get it from Google, for instance."/>
 				</Col>
 				<Col sm="12" md="5">
 					<Linput label="Exchange fee" disabled={disableEx} suffix="%" type="number"
