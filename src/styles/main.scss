@@ -37,6 +37,14 @@ a > i[class|=bi] {
   margin-right: 0.25rem;
 }
 
+th {
+  padding     : 0.375rem 0.5rem 0.375rem 0;
+  font-weight : normal;
+  width       : 1px;
+  white-space : nowrap;
+}
+//td > * { padding: 0 } /* wtf bootstrap, why add padding to anything inside table cells? */
+
 .hover-help {
   text-decoration: $body-secondary-color dotted underline;
   cursor: help;

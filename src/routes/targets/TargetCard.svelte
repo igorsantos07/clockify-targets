@@ -9,15 +9,16 @@
 </style>
 
 <script>
-import { Alert, Button, Card, CardHeader, CardTitle, Col, FormText, Input, InputGroup, InputGroupText, ListGroup, ListGroupItem, Popover, Progress, Row, Tooltip } from 'sveltestrap'
+import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Progress, Row } from 'sveltestrap'
 import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
-import { colorScaleFor, s2$ } from '$lib/fmt'
-import { s2d, s2h } from '$lib/date'
+import { colorScaleFor } from '$lib/fmt'
+import { s2h } from '$lib/date'
 import { _store } from '$data/_store'
 import { persisted } from 'svelte-local-storage-store'
 import TimeBadge from '$cmp/TimeBadge.svelte'
-import plur from 'plur'
-import Muted from '$cmp/Muted.svelte'
+import NonBillableAlert from './NonBillableAlert.svelte'
+import CornerButtons from './CornerButtons.svelte'
+import SummaryTable from './SummaryTable.svelte'
 
 export let billable    = 0
 export let nonBillable = 0
@@ -25,11 +26,6 @@ export let end
 export let title
 
 const SMALL_PROGRESS_BAR = 0.15
-
-const settings = _store.settings
-$: showOff = !$settings.hideMoney
-/** A hackish variable to be used with {#key} on values related to these properties */
-$: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.exchange.rate + $settings.exchange.fee
 
 function id(name) {
 	return `${id.slug}-${name}`
@@ -52,14 +48,16 @@ weekendCount.weekends = weekendCount.days / 2
 
 let daysOff = persisted(id('daysOff'), 0)
 let targetH = persisted(id('target'), 36)
-$: targetS  = $targetH * 60 * 60
-$: leftS    = targetS - workedHours
+$: targetSecs = $targetH * 60 * 60
+$: leftSecs = targetSecs - workedHours
+
+const settings = _store.settings
 
 //TODO use user.settings.myStartOfDay
 $: perDays = {
-	7: leftS / Math.max(daysLeft - $daysOff, 1),
-	6: leftS / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1),
-	5: leftS / Math.max(daysLeft - weekendCount.days - $daysOff, 1),
+	7: leftSecs / Math.max(daysLeft - $daysOff, 1),
+	6: leftSecs / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1),
+	5: leftSecs / Math.max(daysLeft - weekendCount.days - $daysOff, 1),
 }
 $: perDaysTarget = perDays[$settings.schedule.colorize]
 </script>
@@ -71,79 +69,16 @@ $: perDaysTarget = perDays[$settings.schedule.colorize]
 				<CardTitle>{title}</CardTitle>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<Button color="transparent" id={id('days-off')}>🏖 {$daysOff || '∅'}</Button>
-				<Popover target={id('days-off')} placement="right" title="🏖 Holidays / vacations?">
-					<InputGroup>
-						<Input class="w-auto" bind:value={$daysOff} type="number" min="0" max="31" />
-						<InputGroupText>days off</InputGroupText>
-					</InputGroup>
-					<FormText>Must be reduced once each day off gets spent.</FormText>
-				</Popover>
-
-				<Button color="transparent" id={id('target')}>🎯 {$targetH}h</Button>
-				<Popover target={id('target')} placement="right" title="🎯 Your target">
-					<InputGroup>
-						<Input class="w-auto" bind:value={$targetH} type="number" min="0" max="200"/>
-						<InputGroupText>hours</InputGroupText>
-					</InputGroup>
-				</Popover>
+				<CornerButtons bind:daysOff bind:targetH idGen={id}/>
 			</Col>
 		</Row>
 	</CardHeader>
 
 	<ListGroup>
-		{#if nonBillable}
-			<ListGroupItem class="p-0 border-0">
-				<Alert color="danger" class="mb-0 border-0">
-					You got {s2d(nonBillable)} ({s2$(nonBillable)}) of <b>non-billable time</b>!
-				</Alert>
-			</ListGroupItem>
-		{/if}
+		<NonBillableAlert {nonBillable}/>
 
 		<ListGroupItem class="pb-0">
-			<table>
-				<tr>
-					<td colspan="2">
-						<big>
-							<b><tt>{s2d(workedHours)}</tt></b> so far
-							{#if showOff}
-								{#key moneyUpdaterKey}
-									<Muted>({s2$(workedHours)} out of {s2$(targetS)})</Muted>
-								{/key}
-							{/if}
-						</big>
-					</td>
-				</tr>
-				<tr>
-					<th>Hours left:</th>
-					<td>
-						<tt>{s2d(leftS)}</tt>
-						{#if showOff}
-							{#key moneyUpdaterKey}
-								<Muted>({s2$(leftS)}!!!)</Muted>
-								{/key}
-							{/if}
-					</td>
-				</tr>
-				<tr>
-					<th>Days left:</th>
-					<td>
-						<span id={id('days-desc')} class="hover-help">{daysLeft} {plur('day', daysLeft)}</span>
-						<Muted>
-							(<span class="d-none d-sm-inline">with </span>{weekendCount.weekends? weekendCount.weekends : 'no'} {plur('weekend', weekendCount.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
-						</Muted>
-
-						<Tooltip target={id('days-desc')}>
-							<ul class="mb-0 text-start ps-3">
-								<li><b>{weekendCount.weekdays}</b> {plur('weekday', weekendCount.weekdays)}</li>
-								<li><b>{weekendCount.saturday}</b> {plur('Saturday', weekendCount.saturday)}</li>
-								<li><b>{weekendCount.sunday}</b> {plur('Sunday', weekendCount.sunday)}</li>
-								<li><b>{$daysOff || 'no'}</b> {plur('day', $daysOff)} off</li>
-							</ul>
-						</Tooltip>
-					</td>
-				</tr>
-			</table>
+			<SummaryTable idGen={id} {daysOff} {daysLeft} {weekendCount} {targetSecs} {leftSecs} {workedHours}/>
 		</ListGroupItem>
 
 		<ListGroupItem class="p-0">
