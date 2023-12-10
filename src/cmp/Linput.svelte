@@ -20,7 +20,11 @@
 </script>
 
 <FormGroup>
-	{#if label}<Label for={id} disabled={$$props.disabled}>{label}:</Label>{/if}
+	{#if $$slots.label || label}
+		<Label for={id} disabled={$$props.disabled}>
+			{#if $$slots.label}<slot name="label"/>{:else}{label}:{/if}
+		</Label>
+	{/if}
 
 	<InputGroup class={prefix || suffix? '' : 'd-block'}><!-- d-block so it supposedly won't force wide inputs when no affixes are in use -->
 		{#if prefix}<InputGroupText>{prefix}</InputGroupText>{/if}
@@ -33,9 +37,9 @@
 		{/if}
 		{#if suffix}<InputGroupText>{suffix}</InputGroupText>{/if}
 	</InputGroup>
-	{#if $$slots.help}
-		<FormText disabled={$$props.disabled}><slot name="help"/></FormText>
-	{:else if help}
-		<FormText disabled={$$props.disabled}>{help}</FormText>
+	{#if $$slots.help || help}
+		<FormText disabled={$$props.disabled}>
+			{#if $$slots.help}<slot name="help"/>{:else}{help}{/if}
+		</FormText>
 	{/if}
 </FormGroup>

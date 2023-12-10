@@ -2,10 +2,15 @@
 import { s2d } from '$lib/date'
 import { colorScaleFor } from '$lib/fmt'
 import { Badge } from 'sveltestrap'
+import { _store } from '$data/_store'
 
 export let seconds
+let klass; export { klass as class }
+const settings = _store.settings
 </script>
 
-<Badge pill class={`py-2 bg-scale-${colorScaleFor(seconds)}`}>
-	{s2d(seconds)} - {colorScaleFor(seconds, true)}
-</Badge>
+{#key $settings.schedule.maxDailyHours}
+	<Badge pill class={`py-2 bg-scale-${colorScaleFor(seconds)} ${klass}`}>
+		{s2d(seconds)} - {colorScaleFor(seconds, true)}
+	</Badge>
+{/key}

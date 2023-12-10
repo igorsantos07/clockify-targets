@@ -24,8 +24,12 @@ export let nonBillable = 0
 export let end
 export let title
 
+const SMALL_PROGRESS_BAR = 0.15
+
 const settings = _store.settings
 $: showOff = !$settings.hideMoney
+/** A hackish variable to be used with {#key} on values related to these properties */
+$: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.exchange.rate + $settings.exchange.fee
 
 function id(name) {
 	return `${id.slug}-${name}`
@@ -102,13 +106,24 @@ $: perDaysTarget = perDays[$settings.schedule.colorize]
 					<td colspan="2">
 						<big>
 							<b><tt>{s2d(workedHours)}</tt></b> so far
-							{#if showOff}<Muted>({s2$(workedHours)} out of {s2$(targetS)})</Muted>{/if}
+							{#if showOff}
+								{#key moneyUpdaterKey}
+									<Muted>({s2$(workedHours)} out of {s2$(targetS)})</Muted>
+								{/key}
+							{/if}
 						</big>
 					</td>
 				</tr>
 				<tr>
 					<th>Hours left:</th>
-					<td><tt>{s2d(leftS)}</tt> {#if showOff}<Muted>({s2$(leftS)}!!!)</Muted>{/if}</td>
+					<td>
+						<tt>{s2d(leftS)}</tt>
+						{#if showOff}
+							{#key moneyUpdaterKey}
+								<Muted>({s2$(leftS)}!!!)</Muted>
+								{/key}
+							{/if}
+					</td>
 				</tr>
 				<tr>
 					<th>Days left:</th>
@@ -133,7 +148,7 @@ $: perDaysTarget = perDays[$settings.schedule.colorize]
 
 		<ListGroupItem class="p-0">
 			<Progress animated class={`bg-scale-${colorScaleFor(perDaysTarget)}`} value={s2h(workedHours)} max={$targetH}>
-				{s2h(workedHours) / $targetH > 0.15 ? colorScaleFor(perDaysTarget, true) : '!!'}
+				{s2h(workedHours) / $targetH > SMALL_PROGRESS_BAR? colorScaleFor(perDaysTarget, true) : '!!'}
 			</Progress>
 		</ListGroupItem>
 

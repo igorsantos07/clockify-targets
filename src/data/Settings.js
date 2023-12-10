@@ -15,6 +15,7 @@ export default class Settings extends Model {
 			7: false,
 			6: false,
 			5: true
-		}
+		},
+		maxDailyHours: 12
 	}
 }

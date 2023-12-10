@@ -58,12 +58,20 @@
 
 .form-text {
   font-style: italic;
+  i, em { font-variant: small-caps }
   .form-floating + & {
     display: block;
     margin-top: -0.5rem;
     //margin-bottom: 1rem; //original margin from form-floating
   }
 }
+@mixin pressed-thumb { //for some odd reason, it's not possible to set webkit+moz in a single rule
+  $pressed: 0.9;
+  width: $form-range-thumb-width * $pressed;
+  height: $form-range-thumb-height * $pressed;
+}
+.form-range::-webkit-slider-thumb:active { @include pressed-thumb }
+.form-range::-moz-range-thumb:active { @include pressed-thumb }
 
 .form-control:disabled,
 .form-label[disabled=true], .form-text[disabled=true] /* these only happens on Linput */ {
@@ -75,7 +83,7 @@ input.w-auto {
   @include media-breakpoint-down(sm) { //reverts to the standard, so it's full-width on narrow screens
     flex-grow: 1 !important;
     width: 1% !important;
-    &.form-control-plaintext { width: 100% !important }
+    &.form-control-plaintext, &.form-range { width: 100% !important }
   }
 }
 select.w-auto {
