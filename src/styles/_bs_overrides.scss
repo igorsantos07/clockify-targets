@@ -1,6 +1,11 @@
 @import "vars";
 @import "~/bootstrap/scss/functions";
 
+.navbar {
+  &[data-bs-theme=dark] { background-color : $darkest !important; }
+  > .container-fluid { align-items: flex-start }
+}
+
 .btn {
   text-transform: uppercase;
   color: $btn-color; //not sure why I had to force this
@@ -14,6 +19,7 @@
 
 .card {
   border-bottom: 3px solid $border-color;
+  &:not(:last-of-type) { margin-bottom: 1rem }
 
   //copied straight from Clockify - doesn't work very much unless that's a sequence of cards with some extra header hiding the top shadow
   //transition: box-shadow .2s ease-in-out;

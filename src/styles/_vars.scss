@@ -53,7 +53,7 @@ $btn-padding-y : math.div($btn-padding-x, 2);
 
 //disabled inputs have the same colors as working ones, but get 60% of opacity at _bs_overrides.scss
 $input-disabled-bg           : var(--bs-body-bg);
-$form-range-track-bg         : $body-secondary-color;
+$form-range-track-bg         : $light;
 $form-range-track-height     : 0.25rem;
 $form-range-thumb-active-bg  : $blue;
 $form-select-indicator-color : $body-color;

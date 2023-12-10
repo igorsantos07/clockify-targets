@@ -51,7 +51,7 @@ $: perDays = {
 $: perDaysTarget = perDays[$settings.schedule.colorize]
 </script>
 
-<Card class="mb-3">
+<Card>
 	<CardHeader class={`bg-scale-${colorScaleFor(perDaysTarget)}`}>
 		<Row>
 			<Col>
