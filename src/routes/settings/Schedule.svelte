@@ -4,23 +4,13 @@
 
 <script>
 import { Badge, Card, CardHeader, CardTitle, Collapse, Input, Label, ListGroup, ListGroupItem } from 'sveltestrap'
-import { _store } from '$data/_store.js'
+import { _store } from '$data/_store'
+import Settings from '$data/Settings'
 import Linput from '$cmp/Linput.svelte'
 import TimeBadge from '$cmp/TimeBadge.svelte'
 import Muted from '$cmp/Muted.svelte'
 
 const settings = _store.settings
-
-const AVG_OPTIONS = {
-	7: '➐ days a week',
-	6: '➏ days, Monday to Saturday',
-	5: '➎ days, Monday to Friday',
-}
-
-if (typeof $settings.schedule.maxDailyHours == 'undefined') {
-	$settings.schedule.maxDailyHours = new Settings().schedule.maxDailyHours
-}
-
 let isOpen = false
 </script>
 
@@ -31,16 +21,19 @@ let isOpen = false
 	<ListGroup flush>
 		<ListGroupItem>
 			<Label>👁️ Show/hide average hours for:</Label>
-			{#each Object.entries(AVG_OPTIONS) as [value, label]}
-				<Input type="switch" bind:checked={$settings.schedule.show[value]} value={value} label={label}/>
-				<!--				<input type="checkbox" bind:group={show} value={`c-${value}`} label={`c-${label}`}/>-->
+			{#each Settings.AVG_OPTIONS as { n: value, color, badge, restLabel }}
+					<Linput type="switch" bind:group={$settings.schedule.show} {value}>
+						<svelte:fragment slot="label"><span class={`text-${color}`}>{badge}</span> {restLabel}</svelte:fragment>
+					</Linput>
 			{/each}
 		</ListGroupItem>
 
 		<ListGroupItem>
 			<Label>🎨 Colorize boxes according to:</Label>
-			{#each Object.entries(AVG_OPTIONS) as [value, label]}
-				<Input type="radio" bind:group={$settings.schedule.colorize} {value} {label} id={`color-${value}`}/><!-- ID avoids clashing with switches above, see https://github.com/bestguy/sveltestrap/issues/66#issuecomment-1848219072 -->
+			{#each Settings.AVG_OPTIONS as { n: value, color, badge, restLabel }}
+				<Linput type="radio" bind:group={$settings.schedule.colorize} {value}>
+					<svelte:fragment slot="label"><span class={`text-${color}`}>{badge}</span> {restLabel}</svelte:fragment>
+				</Linput>
 			{/each}
 		</ListGroupItem>
 

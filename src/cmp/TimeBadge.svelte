@@ -5,7 +5,7 @@ import { Badge } from 'sveltestrap'
 import { _store } from '$data/_store'
 
 export let seconds
-let klass; export { klass as class }
+let klass = ''; export { klass as class }
 const settings = _store.settings
 </script>
 

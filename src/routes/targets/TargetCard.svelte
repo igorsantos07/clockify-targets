@@ -19,6 +19,7 @@ import TimeBadge from '$cmp/TimeBadge.svelte'
 import NonBillableAlert from './NonBillableAlert.svelte'
 import CornerButtons from './CornerButtons.svelte'
 import SummaryTable from './SummaryTable.svelte'
+import Settings from '$data/Settings'
 
 export let billable    = 0
 export let nonBillable = 0
@@ -89,10 +90,10 @@ $: perDaysTarget = perDays[$settings.schedule.colorize]
 
 		<ListGroupItem>
 			<table>
-				{#each [[7,'➐'],[6,'➏'],[5,'➎']] as [numDays, numBadge]}
-					<tr class:d-none={!$settings.schedule.show[numDays]}>
-						<th>{numBadge} Needed hours per day</th>
-						<td><TimeBadge seconds={perDays[numDays]}/></td>
+				{#each Settings.AVG_OPTIONS as { n, color, badge, period }}
+					<tr class:d-none={!$settings.schedule.show.includes(n)}>
+						<th><span class={`text-${color}`}>{badge}</span> {period || 'Needed hours per day'}</th>
+						<td><TimeBadge seconds={perDays[n]}/></td>
 					</tr>
 				{/each}
 			</table>
