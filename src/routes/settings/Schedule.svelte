@@ -10,6 +10,8 @@ import Linput from '$cmp/Linput.svelte'
 import TimeBadge from '$cmp/TimeBadge.svelte'
 import Muted from '$cmp/Muted.svelte'
 
+/** you got to sleep 8 hours a day and find some time to eat, right? */
+const MAX_ALLOWED_HOURS = 24 - 8
 const settings = _store.settings
 let isOpen = false
 </script>
@@ -38,7 +40,7 @@ let isOpen = false
 		</ListGroupItem>
 
 		<ListGroupItem>
-			<Linput type="range" min="8" max="20" step="0.5" bind:value={$settings.schedule.maxDailyHours}>
+			<Linput type="range" min="8" max={MAX_ALLOWED_HOURS} step="0.5" bind:value={$settings.schedule.maxDailyHours}>
 				<svelte:fragment slot="label">
 					📈 Maximum hours per day: <Badge pill color="info">{$settings.schedule.maxDailyHours}h</Badge>
 				</svelte:fragment>

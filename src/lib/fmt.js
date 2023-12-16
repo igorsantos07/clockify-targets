@@ -64,16 +64,16 @@ export function colorScaleFor(seconds, asText = false) {
 		if (hours <= MAX_DAILY_HOURS * .50) {
 			return asText ? 'good' : 0;
 		}
-		if (hours <= MAX_DAILY_HOURS * .60) {
+		if (hours <= MAX_DAILY_HOURS-4) {
 			return asText ? 'doable' : 1;
 		}
-		if (hours <= MAX_DAILY_HOURS * .70) {
+		if (hours <= MAX_DAILY_HOURS-3) {
 			return asText ? 'bad' : 2;
 		}
-		if (hours <= MAX_DAILY_HOURS * .80) {
+		if (hours <= MAX_DAILY_HOURS-2) {
 			return asText ? 'VERY bad' : 3;
 		}
-		if (hours <= MAX_DAILY_HOURS * .90) {
+		if (hours <= MAX_DAILY_HOURS-1) {
 			return asText ? 'terrible!!' : 4;
 		}
 		return asText ? 'seriously?!' : 5;
