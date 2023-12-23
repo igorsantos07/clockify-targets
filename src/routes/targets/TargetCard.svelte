@@ -53,10 +53,10 @@ $: targetSecs = $targetH * 60 * 60
 $: leftSecs   = targetSecs - workedSecs
 
 //TODO use user.settings.myStartOfDay
-$: perDays = {
+$: perDays = { //if any value ends up as a division-by-zero, that results in Infinity and gets hidden
 	7: leftSecs / Math.max(daysLeft - $daysOff, 1),
-	6: leftSecs / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1),
-	5: leftSecs / Math.max(daysLeft - weekendCount.days - $daysOff, 1),
+	6: leftSecs / (daysLeft - weekendCount.sunday - $daysOff),
+	5: leftSecs / (daysLeft - weekendCount.days - $daysOff),
 }
 
 $: perDaysTarget = perDays[$settings.schedule.colorize]
@@ -93,9 +93,13 @@ const workingDays = {
 		<ListGroupItem>
 			<table>
 				{#each Settings.AVG_OPTIONS as { n, color, badge, period }}
+					{@const doable = isFinite(perDays[n])}
 					<tr class:d-none={!$settings.schedule.show.includes(n)}>
-						<th><span class={`text-${color}`}>{badge}</span> {period || 'Needed hours per day'}</th>
-						<td><TimeBadge seconds={perDays[n]}/></td>
+						<th class={!doable? 'text-decoration-line-through text-muted' : null}>
+							<span class={doable? `text-${color}` : 'text-muted'}>{badge}</span>
+							{period || 'Needed hours per day'}
+						</th>
+						<td>{#if doable}<TimeBadge seconds={perDays[n]}/>{/if}</td>
 					</tr>
 				{/each}
 			</table>
