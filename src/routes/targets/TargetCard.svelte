@@ -1,6 +1,6 @@
 <script>
 import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from 'sveltestrap'
-import { differenceInDays, eachDayOfInterval, format } from 'date-fns'
+import { differenceInDays, eachWeekendOfInterval, isSunday } from 'date-fns'
 import { colorScaleFor } from '$lib/fmt'
 import { _store } from '$data/_store'
 import { persisted } from 'svelte-local-storage-store'
@@ -19,23 +19,33 @@ export let title
 function id(name) {
 	return `${id.slug}-${name}`
 }
-id.slug = title.replace(' ', '-')
+id.slug = title.toLowerCase().replace(' ', '-')
 
-const settings      = _store.settings
-const workedSecs    = billable + nonBillable
-const today         = new Date()
-const considerToday = (today.getHours() < $settings.schedule.endOfDay.split(':')[0])
-const totalDays     = (differenceInDays(end, start) + 1)
-const daysLeft      = differenceInDays(end, today) + (considerToday ? 1 : 0)
-const weekendCount  = eachDayOfInterval({ start: today, end })
-	.map(date => format(date, 'i')) //6 = Saturday, 7 = Sunday
-	.reduce((count, dow) => {
-		if (dow == 6) { count.days++; count.saturday++ }
-		if (dow == 7) { count.days++; count.sunday++ }
-		return count
-	}, { saturday: 0, sunday: 0, days: 0 })
-weekendCount.weekdays = daysLeft - weekendCount.days
-weekendCount.weekends = weekendCount.days / 2
+/**
+ * @param interval {{start:Date, end:Date}}
+ * @param daysLeft
+ * @return {{days:number, weekdays:number, weekends:number, saturday:number, sunday:number}}
+ */
+function countWeekendDaysOfInterval(interval, daysLeft = null) {
+	daysLeft    = (daysLeft !== null)? daysLeft : (differenceInDays(interval.end, interval.start) + 1)
+	const count = eachWeekendOfInterval(interval)
+			.reduce((count, day) => {
+				if (isSunday(day)) { count.days++; count.sunday++ }
+				else               { count.days++; count.saturday++ }
+				return count
+			}, { saturday: 0, sunday: 0, days: 0 })
+	count.weekdays = daysLeft - count.days
+	count.weekends = count.days / 2
+	return count
+}
+
+const settings         = _store.settings
+const workedSecs       = billable + nonBillable
+const today            = new Date()
+const considerToday    = (today.getHours() < $settings.schedule.endOfDay.split(':')[0])
+const daysLeft         = differenceInDays(end, today) + (considerToday ? 1 : 0)
+const weekendCount     = countWeekendDaysOfInterval({ start: today, end }, daysLeft)
+const fullweekendCount = countWeekendDaysOfInterval({ start, end })
 
 let daysOff = persisted(id('daysOff'), 0)
 let targetH = persisted(id('target'), 36)
@@ -48,7 +58,13 @@ $: perDays = {
 	6: leftSecs / Math.max(daysLeft - weekendCount.sunday - $daysOff, 1),
 	5: leftSecs / Math.max(daysLeft - weekendCount.days - $daysOff, 1),
 }
+
 $: perDaysTarget = perDays[$settings.schedule.colorize]
+const workingDays = {
+	7: fullweekendCount.weekdays + fullweekendCount.days,
+	6: fullweekendCount.weekdays + fullweekendCount.saturday,
+	5: fullweekendCount.weekdays,
+}[$settings.schedule.colorize]
 </script>
 
 <Card>
@@ -71,7 +87,7 @@ $: perDaysTarget = perDays[$settings.schedule.colorize]
 		</ListGroupItem>
 
 		<ListGroupItem class="p-0">
-			<ProgressBars idGen={id} {perDaysTarget} {daysLeft} {targetH} {totalDays} {workedSecs}/>
+			<ProgressBars idGen={id} {perDaysTarget} {daysLeft} {targetH} totalDays={workingDays} {workedSecs}/>
 		</ListGroupItem>
 
 		<ListGroupItem>

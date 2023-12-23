@@ -4,7 +4,7 @@
 </style>
 
 <script>
-import { pct, colorScaleFor } from '$lib/fmt'
+import { colorScaleFor, pct } from '$lib/fmt'
 import { s2h } from '$lib/date'
 import { Progress, Tooltip } from 'sveltestrap'
 
