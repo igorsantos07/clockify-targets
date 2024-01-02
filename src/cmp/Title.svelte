@@ -4,5 +4,5 @@
 </script>
 
 <svelte:head>
-	<title>{page} [Clockify Extras]</title>
+	<title>{page} [Clockify Targets]</title>
 </svelte:head>

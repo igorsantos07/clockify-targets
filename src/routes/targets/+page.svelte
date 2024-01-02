@@ -6,7 +6,7 @@
 	export let data
 </script>
 
-<Title page="Time targets"/>
+<Title page="Your targets"/>
 <TargetCard title="This week" {...data.weekly}/>
 <TargetCard title="This fortnight" {...data.fortnightly}/>
 <TargetCard title="This month" {...data.monthly}/>

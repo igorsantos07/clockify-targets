@@ -4,7 +4,7 @@
 - [Svelte][sv]: there's nothing fancier for writing frontend apps 🚀
 - [SvelteKit][svk]: I guess it comes bundled, so... Well, routing is great. Not yet used to SSR, though, so that's disabled.
 - [Bootstrap 5][bs5]: what I'm used to and seems more solid than SMUI (mostly because we'll need progress bars here), although React-Bootstrap is waaaay better than [sveltestrap][svstrap].
-- Logo from [logo.com](https://logo.com) (surprisingly well-used domain!) ([logo admin](https://app.logo.com/dashboard/logo_5d913e73-2389-4cb6-a70a-2211dd604f2e/))
+- Logo based on [logo.com](https://logo.com) (surprisingly well-used domain!) ([logo admin](https://app.logo.com/dashboard/logo_5d913e73-2389-4cb6-a70a-2211dd604f2e/)). It got adapted to mimick the Clockify clock arms, and thus there's no SVG available.
 - [Sass][sass]: because it's sassy 💅
 - [Axios][axios]: easy to use "fetch() replacement"
 - [date-fns][date-fns]: still waiting for the Temporal API, and Luxon doesn't allow changing the start of the week yet... 🤷🏼‍

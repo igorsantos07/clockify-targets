@@ -1,5 +1,5 @@
 <svelte:head>
-	<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+	<link rel="shortcut icon" type="image/png" href="/favicon-white.png"/>
 
 	<!-- TODO check with (future) users if we need to explictly download an emoji font) -->
 	<!--	<link rel="preconnect" href="https://fonts.googleapis.com"/>-->
@@ -33,7 +33,7 @@ function toggleNavbar() {
 		<Col>
 			<!-- TODO move these to a sidebar menu, like the Clockify interface -->
 			<NavbarToggler class="border-0" on:click={toggleNavbar}/>
-			<NavbarBrand href="/"><img src="/logo.svg" alt="Clockify Extras"/></NavbarBrand>
+			<NavbarBrand href="/"><img src="/logo-white-32.png" alt="Clockify Targets"/></NavbarBrand>
 			<Collapse isOpen={navbarOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem>

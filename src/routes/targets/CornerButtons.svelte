@@ -21,7 +21,7 @@ export let idGen
 </Button>
 <Popover target={idGen('target')} placement="right" title="🎯 Your target">
 	<InputGroup>
-		<Input class="w-auto" bind:value={$targetH} type="number" min="0" max="200"/>
+		<Input class="w-auto" bind:value={$targetH} type="number" min="0" max="250"/>
 		<InputGroupText>hours</InputGroupText>
 	</InputGroup>
 </Popover>
