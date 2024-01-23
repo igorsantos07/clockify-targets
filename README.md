@@ -9,7 +9,10 @@
 - [Axios][axios]: easy to use "fetch() replacement"
 - [date-fns][date-fns]: still waiting for the Temporal API, and Luxon doesn't allow changing the start of the week yet... 🤷🏼‍
 - [devalue][devalue]: a fancy little lib to better serialize data into LocalStorage, from which I got an interesting idea to serialize our own models 😎
-- [Firebase][Firebase]: for database and deployment needs
+- [Firebase][Firebase]: for a bunch of tools:
+  - [Analytics](https://firebase.google.com/docs/analytics/get-started?platform=web)
+  - [NoSQL database (Firestore)](https://firebase.google.com/docs/firestore/quickstart)
+  - [Performance monitoring](https://firebase.google.com/docs/perf-mon/get-started-web)
 
 ## Developing
 

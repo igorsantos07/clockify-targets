@@ -23,13 +23,15 @@
 		"devalue": "^4.3.2",
 		"eslint": "^8.28.0",
 		"eslint-plugin-svelte": "^2.35.1",
+		"firebase": "^10.7.2",
 		"iso8601-duration": "^2.1.1",
 		"plur": "^5.1.0",
 		"sass": "^1.66.1",
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
 		"svelte-local-storage-store": "^0.6.0",
-		"sveltestrap": "^5.11.1"
+		"sveltestrap": "^5.11.1",
+		"web-vitals": "^3.5.1"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-pipeline-operator": "^7.22.5",

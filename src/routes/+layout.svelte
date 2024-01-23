@@ -16,6 +16,9 @@
 import { Col, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Spinner, Tooltip } from 'sveltestrap'
 import Auth from '$lib/Auth'
 import { _store } from '$data/_store'
+import { FIREBASE_INIT } from '$data/_firebase'
+
+FIREBASE_INIT()
 
 let navbarOpen  = false
 const isAuth    = new Auth().$isAuth
