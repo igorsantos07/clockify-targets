@@ -1,8 +1,10 @@
 import { onMount } from 'svelte'
+import { dev } from '$app/environment'
 import { initializeApp as initializeFirebase } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getFirestore } from 'firebase/firestore'
 import { getPerformance } from 'firebase/performance'
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check'
 import { onLCP, onFID, onCLS } from 'web-vitals/attribution'
 
 let FIREBASE
@@ -30,6 +32,13 @@ export const FIREBASE_INIT = () => {
 		ANALYTICS = getAnalytics(FIREBASE)
 		DB        = getFirestore(FIREBASE)
 		PERF      = getPerformance(FIREBASE)
+
+		//TODO should we have a test key for dev use? I guess it's not needed, since there's this debug token thingie
+		window.FIREBASE_APPCHECK_DEBUG_TOKEN = dev
+		const APP_CHECK = initializeAppCheck(FIREBASE, {
+		  provider: new ReCaptchaEnterpriseProvider('6LfbTlkpAAAAADMZMyD6geyj3WIPkJH-_pEJFQPK'),
+		  isTokenAutoRefreshEnabled: true
+		})
 
 		//extra stuff that Performance Monitoring suggests
 		onCLS(console.debug)
