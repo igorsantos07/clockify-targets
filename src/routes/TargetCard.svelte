@@ -1,5 +1,5 @@
 <script>
-import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from 'sveltestrap'
+import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from '@sveltestrap/sveltestrap'
 import { differenceInDays, eachWeekendOfInterval, isSunday } from 'date-fns'
 import { colorScaleFor } from '$lib/fmt'
 import { _store } from '$data/_store'

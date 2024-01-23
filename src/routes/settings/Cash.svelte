@@ -1,5 +1,5 @@
 <script>
-import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from 'sveltestrap'
+import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from '@sveltestrap/sveltestrap'
 import Linput from '$cmp/Linput.svelte'
 import { _store } from '$data/_store.js'
 import { writable } from 'svelte/store'

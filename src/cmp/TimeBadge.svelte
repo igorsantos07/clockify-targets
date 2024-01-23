@@ -1,7 +1,7 @@
 <script>
 import { s2d } from '$lib/date'
 import { colorScaleFor } from '$lib/fmt'
-import { Badge } from 'sveltestrap'
+import { Badge } from '@sveltestrap/sveltestrap'
 import { _store } from '$data/_store'
 
 export let seconds

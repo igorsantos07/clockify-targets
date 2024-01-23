@@ -1,5 +1,5 @@
 <script>
-import { FormGroup, FormText, Input, InputGroup, InputGroupText, Label } from 'sveltestrap'
+import { FormGroup, FormText, Input, InputGroup, InputGroupText, Label } from '@sveltestrap/sveltestrap'
 
 export let value = ''
 export let group = []

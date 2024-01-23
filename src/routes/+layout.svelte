@@ -13,7 +13,7 @@
 </style>
 
 <script>
-import { Col, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Spinner, Tooltip } from 'sveltestrap'
+import { Col, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Spinner, Tooltip } from '@sveltestrap/sveltestrap'
 import Auth from '$lib/Auth'
 import { _store } from '$data/_store'
 import { FIREBASE_INIT } from '$data/_firebase'
@@ -40,7 +40,7 @@ function toggleNavbar() {
 			<Collapse isOpen={navbarOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem>
-						<NavLink disabled={!$isAuth} href="/targets">
+						<NavLink disabled={!$isAuth} href="/">
 							<Icon name="bullseye"/> Targets
 						</NavLink>
 					</NavItem>

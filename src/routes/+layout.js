@@ -6,7 +6,7 @@ export const ssr = false //TODO start using SSR, but first we need to wrap local
 
 export function load({ route }) {
 	if ((!(new Auth().$isAuth) || !get(_store.user)) && route.id != '/api-key') {
-		throw redirect(302, '/api-key')
+		redirect(302, '/api-key')
 	}
 	return {}
 }

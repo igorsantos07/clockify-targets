@@ -2,7 +2,7 @@
 import { s2d } from '$lib/date'
 import { s2$ } from '$lib/fmt'
 import plur from 'plur'
-import { Tooltip } from 'sveltestrap'
+import { Tooltip } from '@sveltestrap/sveltestrap'
 import Muted from '$cmp/Muted.svelte'
 import { _store } from '$data/_store'
 

@@ -1,5 +1,5 @@
 <script>
-import { Button, FormText, Input, InputGroup, InputGroupText, Popover } from 'sveltestrap'
+import { Button, FormText, Input, InputGroup, InputGroupText, Popover } from '@sveltestrap/sveltestrap'
 
 export let daysOff
 export let targetH

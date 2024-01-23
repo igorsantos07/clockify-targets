@@ -6,7 +6,7 @@
 <script>
 import { colorScaleFor, pct } from '$lib/fmt'
 import { s2h } from '$lib/date'
-import { Progress, Tooltip } from 'sveltestrap'
+import { Progress, Tooltip } from '@sveltestrap/sveltestrap'
 
 const SMALL_PROGRESS_BAR = 0.15
 export let workedSecs, targetH, perDaysTarget, totalDays, daysLeft, idGen

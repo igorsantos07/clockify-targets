@@ -3,7 +3,7 @@
 </style>
 
 <script>
-import { Badge, Card, CardHeader, CardTitle, Collapse, Input, Label, ListGroup, ListGroupItem } from 'sveltestrap'
+import { Badge, Card, CardHeader, CardTitle, Collapse, Input, Label, ListGroup, ListGroupItem } from '@sveltestrap/sveltestrap'
 import { _store } from '$data/_store'
 import Settings from '$data/Settings'
 import Linput from '$cmp/Linput.svelte'

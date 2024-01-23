@@ -1,7 +1,7 @@
 <script>
 import { s2d } from '$lib/date.js'
 import { s2$ } from '$lib/fmt.js'
-import { Alert, ListGroupItem } from 'sveltestrap'
+import { Alert, ListGroupItem } from '@sveltestrap/sveltestrap'
 
 export let nonBillable
 </script>
