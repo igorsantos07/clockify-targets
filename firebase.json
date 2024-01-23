@@ -1,0 +1,33 @@
+{
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "*.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "emulators": {
+    "firestore": {
+      "port": 34737
+    },
+    "hosting": {
+      "port": 34732
+    },
+    "ui": {
+      "enabled": true,
+      "port": 34738
+    },
+    "singleProjectMode": true
+  },
+  "firestore": {
+    "rules": ".firebase/firestore.rules",
+    "indexes": ".firebase/firestore-indexes.json"
+  }
+}

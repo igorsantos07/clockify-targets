@@ -9,6 +9,7 @@
 - [Axios][axios]: easy to use "fetch() replacement"
 - [date-fns][date-fns]: still waiting for the Temporal API, and Luxon doesn't allow changing the start of the week yet... 🤷🏼‍
 - [devalue][devalue]: a fancy little lib to better serialize data into LocalStorage, from which I got an interesting idea to serialize our own models 😎
+- [Firebase][Firebase]: for database and deployment needs
 
 ## Developing
 
@@ -20,7 +21,15 @@ To create a production version of your app, use `npm run build`.
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## Deploying
+
+The app is served at https://clockify-targets.web.app.
+
+To deploy it there, use `npx firebase deploy` - although you probably don't need that, Firebase already auto-wired it to GitHub pushes and pull requests 🎉
+
+It's also possible to emulate hosting localy: `npx firebase serve`. This will _not_ build the app previously, you still need to run `npx run build` before, if necessary.
+
+Lastly, here's the [Firebase Console](https://console.firebase.google.com/u/0/project/clockify-targets/overview).
 
 [sv]:https://svelte.dev/docs/introduction
 [svk]:https://kit.svelte.dev/docs/introduction
@@ -30,3 +39,4 @@ You can preview the production build with `npm run preview`.
 [axios]: https://axios-http.com/docs/intro
 [date-fns]: https://date-fns.org/docs/Getting-Started
 [devalue]: https://www.npmjs.com/package/devalue
+[Firebase]: https://firebase.google.com/
