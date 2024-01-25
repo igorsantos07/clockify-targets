@@ -14,17 +14,14 @@
 
 <script>
 import { Col, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Icon, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink, Spinner, Tooltip } from '@sveltestrap/sveltestrap'
-import Auth from '$lib/Auth'
 import { _store } from '$data/_store'
-import { FIREBASE_INIT } from '$data/_firebase'
 
-FIREBASE_INIT()
+export let data
+const { user, settings } = data
 
 let navbarOpen  = false
-const isAuth    = new Auth().$isAuth
 const isLoading = _store.loading
-const user      = _store.user
-const settings  = _store.settings
+const isAuth    = user?.isAuth()
 
 function toggleNavbar() {
 	return navbarOpen = !navbarOpen
@@ -40,7 +37,7 @@ function toggleNavbar() {
 			<Collapse isOpen={navbarOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem>
-						<NavLink disabled={!$isAuth} href="/">
+						<NavLink disabled={!isAuth} href="/">
 							<Icon name="bullseye"/> Targets
 						</NavLink>
 					</NavItem>
@@ -51,7 +48,7 @@ function toggleNavbar() {
 						</NavLink>
 					</NavItem-->
 					<NavItem>
-						<NavLink disabled={!$isAuth} href="/settings">
+						<NavLink disabled={!isAuth} href="/settings">
 							<Icon name="tools"/> Settings
 						</NavLink>
 					</NavItem>
@@ -74,7 +71,7 @@ function toggleNavbar() {
 		</Col>
 		<Col xs="auto">
 			<Nav navbar id="corner-nav">
-				{#if !$isAuth || !$user}
+				{#if !isAuth || !$user}
 					<NavItem>
 						<NavLink href="/api-key">
 							<Icon name="box-arrow-in-left"/> Login

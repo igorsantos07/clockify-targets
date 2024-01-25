@@ -2,8 +2,30 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
+		//locks any request which is not authorized by the rules below
+		//see https://firebase.google.com/docs/firestore/security/rules-structure#overlapping_match_statements
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if true;
     }
+
+    match /users/{id} {
+      allow create: if request.resource.data.apiKey != null;
+      allow list: if resource.data.apiKey != null;
+      allow get, update, delete: if loggedIn(id);
+
+      match /targets/{moment} {
+        allow read, write: if loggedIn(id) && ownsResource();
+      }
+    }
+
+    function loggedIn(userId) {
+			return request.auth.uid != null && request.auth.uid == userId;
+    }
+
+    function ownsResource() {
+      return resource.data.userId == request.auth.uid;
+    }
+
   }
 }

@@ -12,7 +12,7 @@ const WEEK_START_CLOCKIFY = {
 	SATURDAY : 6,
 }
 
-const weekStartsOn = WEEK_START_CLOCKIFY[get(_store.user)?.settings.weekStart]
+const weekStartsOn = WEEK_START_CLOCKIFY[get(_store.user)?.settings?.weekStart || 1]
 
 export const week = {
 	start: (date = new Date()) => startOfWeek(date, { weekStartsOn }),

@@ -1,4 +1,7 @@
 import Model from './Model'
+import { doc, getDoc } from 'firebase/firestore'
+import { _store, get } from '$data/_store.js'
+import User from '$data/User.js'
 
 export default class Settings extends Model {
 
@@ -19,6 +22,6 @@ export default class Settings extends Model {
 		colorize     : '5', //should work as a number, but I guess this is another Svelte bug?
 		show         : [],
 		maxDailyHours: 12,
-		endOfDay     : 16,
+		endOfDay     : '16:00',
 	}
 }

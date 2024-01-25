@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { _store, get } from '$data/_store.js'
+import { _store, get } from '$data/_store'
+import User from '$data/User'
 
 const API = axios.create({
 	baseURL: 'https://api.clockify.me/api/v1/'
@@ -11,7 +12,7 @@ API.interceptors.request.use(config => {
 		throw new axios.Cancel('offline')
 	}
 
-	const key = get(_store.API_KEY)
+	const key = get(User.$API_KEY)
 	if (!key) {
 		throw new Error('API key not present')
 	}

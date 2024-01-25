@@ -14,17 +14,20 @@
     ]
   },
   "emulators": {
-    "firestore": {
-      "port": 34737
+    "singleProjectMode": true,
+    "auth": {
+      "port": 34732
     },
     "hosting": {
-      "port": 34732
+      "port": 34734
+    },
+    "firestore": {
+      "port": 34737
     },
     "ui": {
       "enabled": true,
       "port": 34738
-    },
-    "singleProjectMode": true
+    }
   },
   "firestore": {
     "rules": ".firebase/firestore.rules",

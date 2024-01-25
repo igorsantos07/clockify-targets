@@ -46,9 +46,15 @@ const considerToday    = (today.getHours() < $settings.schedule.endOfDay.split('
 const daysLeft         = differenceInDays(end, today) + (considerToday ? 1 : 0)
 const weekendCount     = countWeekendDaysOfInterval({ start: today, end }, daysLeft)
 const fullweekendCount = countWeekendDaysOfInterval({ start, end })
+const allWorkingDays   = {
+	7: fullweekendCount.weekdays + fullweekendCount.days,
+	6: fullweekendCount.weekdays + fullweekendCount.saturday,
+	5: fullweekendCount.weekdays,
+}
+const workingDays = allWorkingDays[$settings.schedule.colorize]
 
 let daysOff = persisted(id('daysOff'), 0)
-let targetH = persisted(id('target'), 36)
+let targetH = persisted(id('target'), allWorkingDays[5] * 8) //TODO add a "reset periods" button which would recalculate the targets based on `workingDays` (good for when you're starting a new month)
 $: targetSecs = $targetH * 60 * 60
 $: leftSecs   = targetSecs - workedSecs
 
@@ -60,11 +66,6 @@ $: perDays = { //if any value ends up as a division-by-zero, that results in Inf
 }
 
 $: perDaysTarget = perDays[$settings.schedule.colorize]
-const workingDays = {
-	7: fullweekendCount.weekdays + fullweekendCount.days,
-	6: fullweekendCount.weekdays + fullweekendCount.saturday,
-	5: fullweekendCount.weekdays,
-}[$settings.schedule.colorize]
 </script>
 
 <Card>

@@ -4,15 +4,15 @@
 
 <script>
 import { Badge, Card, CardHeader, CardTitle, Collapse, Input, Label, ListGroup, ListGroupItem } from '@sveltestrap/sveltestrap'
-import { _store } from '$data/_store'
 import Settings from '$data/Settings'
 import Linput from '$cmp/Linput.svelte'
 import TimeBadge from '$cmp/TimeBadge.svelte'
 import Muted from '$cmp/Muted.svelte'
 
+export let settings
+
 /** you got to sleep 8 hours a day and find some time to eat, right? */
 const MAX_ALLOWED_HOURS = 24 - 8
-const settings = _store.settings
 let isOpen = false
 </script>
 

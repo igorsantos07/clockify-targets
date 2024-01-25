@@ -1,50 +1,80 @@
-import { persisted as basePersisted } from 'svelte-local-storage-store'
-import { writable as memoryPersistance } from 'svelte/store'
-import * as devalue from 'devalue'
-
-//these must stay so deserialization works properly!
-// noinspection ES6UnusedImports
+import { persisted as local } from 'svelte-local-storage-store'
+import { writable as inMemory } from 'svelte/store'
+import { addDoc, collection, doc, setDoc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import User from './User'
 import Settings from './Settings'
+import { DB } from '$lib/firebase.js'
+import { get as baseGet } from 'svelte/store'
 
-export { get } from 'svelte/store'
+export const get = baseGet
 
-const generalPersistance = (key, initial) => basePersisted(key, initial, { serializer: devalue })
-const modelPersistance = (key, initial) => basePersisted(key, initial, {
-	serializer: {
-		parse    : json => {
-			switch (json) {
-				case 'UNDEF':
-					return undefined
-				case 'NULL' :
-					return null
-				default:
-					const { t: type, d: data } = JSON.parse(json)
-					const instance = eval(`new ${type}`) //urgh
-					instance.fill(data)
-					return instance
-			}
+const SINGLETONS = {}
+
+const KEYS = {
+	SETTINGS: 'settings',
+	USER: 'user',
+}
+
+//"losely" inspired in svelte-persisted-store
+//there are only two firestore packages for Svelte; one doesn't work with SSR=false and the other is not even properly documented... gave up and made my own lol
+//FIXME this should probably be a store that saves data back to firestore, but doesn't bring it back - this is a responsibility of +layout.js:load(). Not sure what will be done of Target or History data, though...
+const firestore = (key, initial, isSingleton = false) => {
+
+	if (isSingleton && SINGLETONS[key]) {
+		console.log(`Grabbing store singleton for ${key}`)
+		return SINGLETONS[key]
+	}
+
+	/**
+	 * @param key {string}
+	 * @param value
+	 */
+	function push(key, value) {
+		if (value) { //TODO what to do when we're cleaning up the local store / logging out the user?
+			console.log(`Should sync {${key}} with Firestore`, value)
+			return (key.split('/').length % 2) == 0 ?  // users/123 has ID, but users/123/photos don't
+					setDoc(doc(DB, key), value) :
+					addDoc(collection(DB, key), value)
+		} else {
+			console.log('Did not sync with Firestore because the value stored is undefined')
+		}
+	}
+
+	//creates the usual in-memory store and augments it with Firestore sync capabilities
+	const store = inMemory(initial)
+	const { subscribe, set } = store
+
+	//tries to load initial data from Firestore and updates the store once it arrives
+	console.log(`Should load {${key}} from Firestore`)
+
+	const entry = {
+		subscribe,
+		set: value => {
+			set(value)
+			push(key, value) //FIXME send data to Firestore? maybe remove push() and trottle API calls directly here?
 		},
-		stringify: obj => {
-			if (typeof obj == 'undefined') { //mimicking devalue's support for undefined and friends
-				return 'UNDEF'
+		update: callback => {
+			if (!this.hasId()) {
+				throw new Error('No ID to update the document!', this)
 			}
-			if (obj === null) {
-				return 'NULL'
-			}
-			return JSON.stringify({
-				t: obj.constructor.name,
-				d: obj, //becomes just its properties
+			return store.update(last => {
+				const value = callback(last)
+				push(key, value) //FIXME check the difference between set and update!
+				return value
 			})
-		},
-	},
-})
+		}
+	}
+}
 
 export const _store = {
-	API_KEY : generalPersistance('API_KEY', ''),
-	loading : memoryPersistance(false),
+	API_KEY : local('API_KEY', null),
+	loading : inMemory(false),
+
+/******** HERE BE "local cache" for smart subscriptions around the app ********/
+
 	/** @type SvelteStore<Settings> */
-	settings: modelPersistance('settings', new Settings()),
+	settings: local(KEYS.SETTINGS, new Settings), //always contains default data
+
 	/** @type SvelteStore<?User> */
-	user: modelPersistance('user', undefined),
+	user    : local(KEYS.USER), //no user = not logged in
 }

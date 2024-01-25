@@ -3,6 +3,7 @@ import API from '$lib/API'
 import { d2s, id2s, week } from '$lib/date'
 import { endOfDay, endOfMonth, formatISO, intervalToDuration, parseISO, setDate, startOfDay, startOfMonth } from 'date-fns'
 import TimeSummary from '../data/TimeSummary.js'
+import User from '$data/User.js'
 
 /** @typedef TimeEntry
  * @property {boolean} billable
@@ -27,13 +28,13 @@ function sumDurations(totals, { billable, timeInterval }) { //named so it gets t
 	return totals
 }
 
-export async function load({ params }) {
+export async function load({ parent }) {
 	/** @type User */
-	const user = get(_store.user)
-	const today = new Date()
+	const { user } = await parent()
 
-	const sow = week.start()
-	const eow = week.end()
+	const today = new Date()
+	const sow  = week.start()
+	const eow  = week.end()
 
 	const som = startOfMonth(today)
 	const eom = endOfMonth(today)
