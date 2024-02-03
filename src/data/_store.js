@@ -6,6 +6,7 @@ import * as devalue from 'devalue'
 // noinspection ES6UnusedImports
 import User from './User'
 import Settings from './Settings'
+const MODEL_LIST = { User, Settings }
 
 export { get } from 'svelte/store'
 
@@ -20,7 +21,7 @@ const modelPersistance = (key, initial) => basePersisted(key, initial, {
 					return null
 				default:
 					const { t: type, d: data } = JSON.parse(json)
-					const instance = eval(`new ${type}`) //urgh
+					const instance = new MODEL_LIST[type]
 					instance.fill(data)
 					return instance
 			}
@@ -44,7 +45,7 @@ export const _store = {
 	API_KEY : generalPersistance('API_KEY', ''),
 	loading : memoryPersistance(false),
 	/** @type SvelteStore<Settings> */
-	settings: modelPersistance('settings', new Settings()),
+	settings: modelPersistance('settings', new Settings),
 	/** @type SvelteStore<?User> */
 	user: modelPersistance('user', undefined),
 }
