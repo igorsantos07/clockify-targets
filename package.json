@@ -10,14 +10,13 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"build-deploy": "npm run build && firebase deploy",
 		"fire-emulators": "firebase emulators:start --import=.firebase/data --export-on-exit",
-
 		"prestart": "tmux new-session -d -s $npm_package_name && tmux split-window -t $npm_package_name:0 -h",
 		"start": "tmux send-keys -t $npm_package_name:0.0 'npm run dev' C-m && tmux send-keys -t $npm_package_name:0.1 'npm run fire-emulators' C-m",
 		"poststart": "clear && echo \"$(tput bold)$(tput setab 7)$(tput setaf 0) -=- Your TMUX session '$npm_package_name' was started -=- $(tput sgr0)\n$(tput setab 7)$(tput setaf 4)  Attach with $(tput bold)npm run tmux  $(tput sgr0)$(tput setab 7)$(tput setaf 0) :: $(tput setab 7)$(tput setaf 1)  Detach with $(tput bold)Ctrl^B D    $(tput sgr0)\n$(tput setab 7)$(tput setaf 2)$(tput bold)  • SvelteKit dev server $(tput sgr0)$(tput setab 7)$(tput setaf 2)> $(tput smul)http://localhost:5173$(tput rmul)          $(tput sgr0)\n$(tput setab 7)$(tput setaf 5)$(tput bold)  • Firestore emulator $(tput sgr0)$(tput setab 7)$(tput setaf 5)> $(tput smul)http://localhost:34738/firestore$(tput rmul) $(tput sgr0)\"",
 		"stop": "tmux kill-session -t $npm_package_name",
 		"tmux": "tmux attach-session -t $npm_package_name",
-
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"lint": "eslint ."
@@ -43,6 +42,7 @@
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-pipeline-operator": "^7.22.5",
+		"@babel/plugin-proposal-throw-expressions": "^7.23.3",
 		"@sveltejs/adapter-static": "^3.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"firebase-tools": "^13.0.3",

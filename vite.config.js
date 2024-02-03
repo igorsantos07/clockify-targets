@@ -10,6 +10,7 @@ export default defineConfig({
 			configFile: false,
 			plugins   : [
 				['@babel/plugin-proposal-pipeline-operator', { proposal: 'hack', topicToken: '#' }],
+				'@babel/plugin-proposal-throw-expressions'
 			]
 		}})
 	]

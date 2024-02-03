@@ -2,6 +2,8 @@ import Model from './Model'
 
 export default class Settings extends Model {
 
+	static _TYPE = 'Settings'
+
 	static AVG_OPTIONS = [
 		{ n: 7, badge: '➐', color: 'danger',  restLabel: 'days a week', period: false },
 		{ n: 6, badge: '➏', color: 'warning', restLabel: 'days, Monday to Saturday', period: 'Monday to Saturday' },

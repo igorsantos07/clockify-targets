@@ -6,7 +6,9 @@ import * as devalue from 'devalue'
 // noinspection ES6UnusedImports
 import User from './User'
 import Settings from './Settings'
-const MODEL_LIST = { User, Settings }
+const MODEL_LIST = [User, Settings]
+		.map(model => [model._TYPE, model])
+		|>Object.fromEntries(#)
 
 export { get } from 'svelte/store'
 
@@ -33,8 +35,9 @@ const modelPersistance = (key, initial) => basePersisted(key, initial, {
 			if (obj === null) {
 				return 'NULL'
 			}
+			const t = obj._TYPE
 			return JSON.stringify({
-				t: obj.constructor.name,
+				t: obj.constructor._TYPE ?? throw new Error('Trying to serialize object without `_TYPE` prop??'),
 				d: obj, //becomes just its properties
 			})
 		},
