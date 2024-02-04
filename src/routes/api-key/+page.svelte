@@ -2,7 +2,7 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Icon } from '@sveltestrap/sveltestrap'
 import Auth from '$lib/Auth.js'
 import { _store, get } from '$data/_store'
-import User from '$data/User'
+import User from '$data/models/User'
 import Linput from '$cmp/Linput.svelte'
 import API from '$lib/API'
 import Title from '$cmp/Title.svelte'

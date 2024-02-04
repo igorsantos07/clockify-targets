@@ -1,9 +1,10 @@
 <script>
 import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from '@sveltestrap/sveltestrap'
-import Linput from '$cmp/Linput.svelte'
-import { _store } from '$data/_store.js'
+import Settings from '$data/models/Settings'
+import { _store } from '$data/_store'
 import { writable } from 'svelte/store'
-import { mfd2, moneyLong } from '$lib/fmt.js'
+import { mfd2, moneyLong } from '$lib/fmt'
+import Linput from '$cmp/Linput.svelte'
 
 const settings = _store.settings
 
@@ -29,10 +30,9 @@ $: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee
 
 		<ListGroupItem>
 			<Linput type="select" label="Your local currency" bind:value={$settings.currency} id="currency">
-				<option value="USD">🇺🇸 USD</option>
-				<option value="BRL">🇧🇷 BRL</option>
-				<option value="EUR">🇪🇺 EUR</option>
-				<option value="GBP">🇬🇧 GBP</option>
+				{#each Object.entries(Settings.CURRENCIES) as [value, label]}
+					<option {value}>{label}</option>
+				{/each}
 			</Linput>
 
 			<Row>

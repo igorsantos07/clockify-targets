@@ -5,7 +5,7 @@
 <script>
 import { Badge, Card, CardHeader, CardTitle, Collapse, Input, Label, ListGroup, ListGroupItem } from '@sveltestrap/sveltestrap'
 import { _store } from '$data/_store'
-import Settings from '$data/Settings'
+import Settings from '$data/models/Settings'
 import Linput from '$cmp/Linput.svelte'
 import TimeBadge from '$cmp/TimeBadge.svelte'
 import Muted from '$cmp/Muted.svelte'
