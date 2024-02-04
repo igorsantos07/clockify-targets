@@ -6,13 +6,15 @@
 <script>
 import { colorScaleFor, pct } from '$lib/fmt'
 import { s2h } from '$lib/date'
+import { idGenerator } from '$lib'
 import { Progress, Tooltip } from '@sveltestrap/sveltestrap'
 
+const idGen = idGenerator()
 const SMALL_PROGRESS_BAR = 0.15
-export let workedSecs, targetH, perDaysTarget, totalDays, daysLeft, idGen
+export let workedSecs, hours, perDaysTarget, total, left
 
-const pctDone     = s2h(workedSecs) / $targetH
-const pctExpected = (totalDays - daysLeft) / totalDays
+const pctDone     = s2h(workedSecs) / hours
+const pctExpected = (total - left) / total
 const diff        = pctDone - pctExpected
 const exceeded    = pctDone >= 1
 </script>
@@ -22,7 +24,7 @@ const exceeded    = pctDone >= 1
 	{#if exceeded}
 		<b>🔥 100% 🔥</b>
 	{:else}
-		{s2h(workedSecs) / $targetH > SMALL_PROGRESS_BAR? colorScaleFor(perDaysTarget, true) : '!!'}
+		{pctDone > SMALL_PROGRESS_BAR? colorScaleFor(perDaysTarget, true) : '!!'}
 	{/if}
 </Progress>
 <Tooltip target={idGen('progress')} placement="top">

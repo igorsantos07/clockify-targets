@@ -84,7 +84,7 @@ export default class Settings extends Model {
 		}
 		return 'USD'
 	}
-	
+
 	get shouldConsiderToday() {
 		return (new Date().getHours() < this.schedule.endOfDay.split(':')[0])
 	}

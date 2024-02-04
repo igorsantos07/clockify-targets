@@ -1,70 +1,53 @@
 <script>
 import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from '@sveltestrap/sveltestrap'
-import { differenceInDays, eachWeekendOfInterval, isSunday } from 'date-fns'
 import { colorScaleFor } from '$lib/fmt'
 import { _store } from '$data/_store'
-import { persisted } from 'svelte-local-storage-store'
+import Settings from '$data/models/Settings'
+import Period from '$data/Period'
+import Days from '$data/Days'
 import TimeBadge from '$cmp/TimeBadge.svelte'
 import NonBillableAlert from './NonBillableAlert.svelte'
-import CornerButtons from './CornerButtons.svelte'
 import SummaryTable from './SummaryTable.svelte'
-import Settings from '$data/Settings'
 import ProgressBars from './ProgressBars.svelte'
+import CornerButtons from './CornerButtons.svelte'
 
 export let billable    = 0
 export let nonBillable = 0
 export let start, end
 export let title
 
-function id(name) {
-	return `${id.slug}-${name}`
-}
-id.slug = title.toLowerCase().replace(' ', '-')
+const settings      = _store.settings
+const workedSecs    = billable + nonBillable
+const period        = new Period(title, start, end)
+const considerToday = $settings.shouldConsiderToday
 
-/**
- * @param interval {{start:Date, end:Date}}
- * @param daysLeft
- * @return {{days:number, weekdays:number, weekends:number, saturday:number, sunday:number}}
- */
-function countWeekendDaysOfInterval(interval, daysLeft = null) {
-	daysLeft    = (daysLeft !== null)? daysLeft : (differenceInDays(interval.end, interval.start) + 1)
-	const count = eachWeekendOfInterval(interval)
-			.reduce((count, day) => {
-				if (isSunday(day)) { count.days++; count.sunday++ }
-				else               { count.days++; count.saturday++ }
-				return count
-			}, { saturday: 0, sunday: 0, days: 0 })
-	count.weekdays = daysLeft - count.days
-	count.weekends = count.days / 2
-	return count
-}
+//so we can read+subscribe in this own component
+const targetHours = period.target
+const daysOff     = period.daysOff
 
-const settings         = _store.settings
-const workedSecs       = billable + nonBillable
-const today            = new Date()
-const considerToday    = (today.getHours() < $settings.schedule.endOfDay.split(':')[0])
-const daysLeft         = differenceInDays(end, today) + (considerToday ? 1 : 0)
-const weekendCount     = countWeekendDaysOfInterval({ start: today, end }, daysLeft)
-const fullweekendCount = countWeekendDaysOfInterval({ start, end })
+/** @type Days */ const daysLeft = new Days(new Date(), end, considerToday)
 
-let daysOff = persisted(id('daysOff'), 0)
-let targetH = persisted(id('target'), 36)
-$: targetSecs = $targetH * 60 * 60
-$: leftSecs   = targetSecs - workedSecs
-
-//TODO use user.settings.myStartOfDay
-$: perDays = { //if any value ends up as a division-by-zero, that results in Infinity and gets hidden
-	7: leftSecs / Math.max(daysLeft - $daysOff, 1),
-	6: leftSecs / (daysLeft - weekendCount.sunday - $daysOff),
-	5: leftSecs / (daysLeft - weekendCount.days - $daysOff),
+//for some reason, just using $: is not working anymore in front of those variables? not sure if caused by change on where the stores are defined (moved from here to the model files), or by upgrading Svelte
+let targetSecs, leftSecs, perDays, perDaysTarget
+$: {
+	targetSecs = $targetHours * 60 * 60
+	leftSecs   = targetSecs - workedSecs
+	//TODO use user.settings.myStartOfDay
+	perDays    = { //if any value ends up as a division-by-zero, that results in Infinity and gets hidden
+		7: leftSecs / Math.max(daysLeft.total - $daysOff, 1),
+		6: leftSecs / (daysLeft.total - daysLeft.sundays - $daysOff),
+		5: leftSecs / (daysLeft.total - daysLeft.weekendDays - $daysOff),
+	}
+	perDaysTarget = perDays[parseInt($settings.schedule.colorize)]
 }
 
-$: perDaysTarget = perDays[$settings.schedule.colorize]
-const workingDays = {
-	7: fullweekendCount.weekdays + fullweekendCount.days,
-	6: fullweekendCount.weekdays + fullweekendCount.saturday,
-	5: fullweekendCount.weekdays,
-}[$settings.schedule.colorize]
+function selectWorkingDays(days) {
+	switch (parseInt($settings.schedule.colorize)) {
+		case 7: return days.total
+		case 6: return days.weekdays + days.saturdays
+		case 5: return days.weekdays
+	}
+}
 </script>
 
 <Card>
@@ -74,7 +57,7 @@ const workingDays = {
 				<CardTitle>{title}</CardTitle>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<CornerButtons bind:daysOff bind:targetH idGen={id}/>
+				<CornerButtons bind:daysOff={period.daysOff} bind:target={period.target}/>
 			</Col>
 		</Row>
 	</CardHeader>
@@ -83,21 +66,24 @@ const workingDays = {
 		<NonBillableAlert {nonBillable}/>
 
 		<ListGroupItem class="pb-0">
-			<SummaryTable idGen={id} {daysOff} {daysLeft} {weekendCount} {targetSecs} {leftSecs} {workedSecs}/>
+			<SummaryTable daysOff={period.daysOff} {daysLeft} {targetSecs} {leftSecs} {workedSecs}/>
 		</ListGroupItem>
 
 		<ListGroupItem class="p-0">
-			<ProgressBars idGen={id} {perDaysTarget} {daysLeft} {targetH} totalDays={workingDays} {workedSecs}/>
+			{#key $targetHours}<!-- wasn't needed before as well... same with period.target using $inside ProgressBars -->
+				<ProgressBars {perDaysTarget} hours={$targetHours} {workedSecs}
+			                total={selectWorkingDays(period.days)} left={selectWorkingDays(daysLeft)}/>
+			{/key}
 		</ListGroupItem>
 
 		<ListGroupItem>
 			<table>
-				{#each Settings.AVG_OPTIONS as { n, color, badge, period }}
+				{#each Settings.AVG_OPTIONS as { n, color, badge, label }}
 					{@const doable = isFinite(perDays[n])}
 					<tr class:d-none={!$settings.schedule.show.includes(n)}>
 						<th class={!doable? 'text-decoration-line-through text-muted' : null}>
 							<span class={doable? `text-${color}` : 'text-muted'}>{badge}</span>
-							{period || 'Needed hours per day'}
+							{label || 'Needed hours per day'}
 						</th>
 						<td>{#if doable}<TimeBadge seconds={perDays[n]}/>{/if}</td>
 					</tr>

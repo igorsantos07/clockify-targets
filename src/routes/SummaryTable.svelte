@@ -1,22 +1,26 @@
 <script>
 import { s2d } from '$lib/date'
 import { s2$ } from '$lib/fmt'
+import { idGenerator } from '$lib'
 import plur from 'plur'
 import { Tooltip } from '@sveltestrap/sveltestrap'
 import Muted from '$cmp/Muted.svelte'
 import { _store } from '$data/_store'
 
-export let idGen
+const idGen = idGenerator()
+
 export let workedSecs
-export let weekendCount
-export let daysOff, daysLeft
+export let daysOff
 export let targetSecs, leftSecs
+/** @type Days */ export let daysLeft
 
 const settings = _store.settings
 $: showOff = !$settings.hideMoney
 /** A hackish variable to be used with {#key} on values related to these properties */
 $: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.exchange.rate + $settings.exchange.fee
+
 </script>
+
 <table>
 	<tr>
 		<td colspan="2">
@@ -44,16 +48,16 @@ $: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.excha
 	<tr>
 		<th>Days left:</th>
 		<td>
-			<span id={idGen('days-desc')} class="hover-help">{daysLeft} {plur('day', daysLeft)}</span>
+			<span id={idGen('days-desc')} class="hover-help">{daysLeft.total} {plur('day', daysLeft.total)}</span>
 			<Muted>
-				(<span class="d-none d-sm-inline">with </span>{weekendCount.weekends? weekendCount.weekends : 'no'} {plur('weekend', weekendCount.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
+				(<span class="d-none d-sm-inline">with </span>{daysLeft.weekends? daysLeft.weekends : 'no'} {plur('weekend', daysLeft.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
 			</Muted>
 
 			<Tooltip target={idGen('days-desc')}>
 				<ul class="mb-0 text-start ps-3">
-					<li><b>{weekendCount.weekdays}</b> {plur('weekday', weekendCount.weekdays)}</li>
-					<li><b>{weekendCount.saturday}</b> {plur('Saturday', weekendCount.saturday)}</li>
-					<li><b>{weekendCount.sunday}</b> {plur('Sunday', weekendCount.sunday)}</li>
+					<li><b>{daysLeft.weekdays}</b> {plur('weekday', daysLeft.weekdays)}</li>
+					<li><b>{daysLeft.saturdays}</b> {plur('Saturday', daysLeft.saturdays)}</li>
+					<li><b>{daysLeft.sundays}</b> {plur('Sunday', daysLeft.sundays)}</li>
 					<li><b>{$daysOff || 'no'}</b> {plur('day', $daysOff)} off</li>
 				</ul>
 			</Tooltip>

@@ -11,7 +11,20 @@ const MODEL_LIST = [User, Settings]
 export { get } from 'svelte/store'
 
 export const generalPersistance = (key, initial) => basePersisted(key, initial, { serializer: devalue })
-const modelPersistance   = (key, initial) => basePersisted(key, initial, {
+/**
+ * Same as {@link generalPersistance}, but forcing the value with {@link parseInt}
+ * @param key {string}
+ * @param initial {number}
+ * @returns {SvelteStore<number>}
+ */
+export const intPersistance = (key, initial) => {
+	const store = basePersisted(key, initial, { serializer: devalue })
+	store.baseSet = store.set
+	store.set = v => store.baseSet(parseInt(v))
+	return store
+}
+
+const modelPersistance = (key, initial) => basePersisted(key, initial, {
 	serializer: {
 		parse    : json => {
 			switch (json) {

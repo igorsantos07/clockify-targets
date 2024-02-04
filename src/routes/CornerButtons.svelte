@@ -1,9 +1,10 @@
 <script>
 import { Button, FormText, Input, InputGroup, InputGroupText, Popover } from '@sveltestrap/sveltestrap'
+import { idGenerator } from '$lib'
 
-export let daysOff
-export let targetH
-export let idGen
+export let target, daysOff
+const idGen = idGenerator()
+
 </script>
 <Button color="transparent" id={idGen('days-off')}>
 	🏖&nbsp;&nbsp;{#if $daysOff}<b>{$daysOff}</b>{:else}∅{/if}
@@ -17,11 +18,11 @@ export let idGen
 </Popover>
 
 <Button color="transparent" id={idGen('target')}>
-	🎯&nbsp;&nbsp;{$targetH}h
+	🎯&nbsp;&nbsp;{$target}h
 </Button>
 <Popover target={idGen('target')} placement="right" title="🎯 Your target">
 	<InputGroup>
-		<Input class="w-auto" bind:value={$targetH} type="number" min="0" max="250"/>
+		<Input class="w-auto" bind:value={$target} type="number" min="0" max="250"/>
 		<InputGroupText>hours</InputGroupText>
 	</InputGroup>
 </Popover>
