@@ -1,4 +1,4 @@
-import { persisted as basePersisted } from 'svelte-local-storage-store'
+import { persisted as basePersisted } from 'svelte-persisted-store'
 import { writable as memoryPersistance } from 'svelte/store'
 import * as devalue from 'devalue'
 
