@@ -14,10 +14,16 @@ export let workedSecs, targetH, perDaysTarget, totalDays, daysLeft, idGen
 const pctDone     = s2h(workedSecs) / $targetH
 const pctExpected = (totalDays - daysLeft) / totalDays
 const diff        = pctDone - pctExpected
+const exceeded    = pctDone >= 1
 </script>
 
-<Progress animated id={idGen('progress')} class={`bg-scale-${colorScaleFor(perDaysTarget)}`} value={pctDone * 100}>
-	{s2h(workedSecs) / $targetH > SMALL_PROGRESS_BAR? colorScaleFor(perDaysTarget, true) : '!!'}
+<Progress animated id={idGen('progress')} value={pctDone * 100}
+          class={!exceeded && `bg-scale-${colorScaleFor(perDaysTarget)}`} color={exceeded && 'success'}>
+	{#if exceeded}
+		<b>🔥 100% 🔥</b>
+	{:else}
+		{s2h(workedSecs) / $targetH > SMALL_PROGRESS_BAR? colorScaleFor(perDaysTarget, true) : '!!'}
+	{/if}
 </Progress>
 <Tooltip target={idGen('progress')} placement="top">
 	You've worked <b><tt>{pct(pctDone)}</tt></b> of your current target
