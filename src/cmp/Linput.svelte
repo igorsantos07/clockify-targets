@@ -1,8 +1,9 @@
 <script>
 import { FormGroup, FormText, Input, InputGroup, InputGroupText, Label } from '@sveltestrap/sveltestrap'
 
-export let value = ''
-export let group = []
+export let checked = false
+export let value   = ''
+export let group   = null
 
 export let type   = 'text'
 export let label  = ''
@@ -22,15 +23,13 @@ if (size == 'sm' || size == 'lg') {
 	classes += ` form-control-${size}`
 }
 
-if (isCheckOrRadio && (help || $$slots.help)) {
-	console.error('Radios and checkboxes do not support the `help` block. Are you sure that makes sense?')
-}
-
 //https://github.com/sveltejs/svelte/issues/2308#issuecomment-878154680
 function onCheck({ target: { checked }}) {
-	group = type == 'radio'? value :
-		(checked? [...group, value] :
-			group.filter(item => item !== value))
+	if (group) {
+		group = type == 'radio' ? value :
+			(checked ? [...group, value] :
+				group.filter(item => item !== value))
+	}
 }
 </script>
 
@@ -46,12 +45,22 @@ function onCheck({ target: { checked }}) {
 			<input on:change={onCheck} checked={group == value} type="radio" {...$$restProps} {id} class={`form-check-input ${classes}`}/>
 		{:else}
 			{@const role = (type == 'switch'? 'switch' : false)}
-			<input on:change={onCheck} checked={group.includes(value)} type="checkbox" {role} {...$$restProps} {id} class={`form-check-input ${classes}`} />
+			{#if group}
+				<input on:change={onCheck} checked={group.includes(value)} type="checkbox" {role} {...$$restProps} {id} class={`form-check-input ${classes}`} />
+			{:else}
+				<input bind:checked type="checkbox" {role} {...$$restProps} {id} class={`form-check-input ${classes}`} />
+			{/if}
 		{/if}
 
 		{#if $$slots.label || label}
 			<label for={id} disabled={$$props.disabled} class="form-check-label">
 				{#if $$slots.label}<slot name="label"/>{:else}{label}{/if}
+
+				{#if $$slots.help || help}
+					<FormText disabled={$$props.disabled}>
+						{#if $$slots.help}<slot name="help"/>{:else}{help}{/if}
+					</FormText>
+				{/if}
 			</label>
 		{/if}
 	</div>
@@ -76,11 +85,11 @@ function onCheck({ target: { checked }}) {
 			{#if suffix}<InputGroupText>{suffix}</InputGroupText>{/if}
 		</InputGroup>
 
-	{#if $$slots.help || help}
-		<FormText disabled={$$props.disabled}>
-			{#if $$slots.help}<slot name="help"/>{:else}{help}{/if}
-		</FormText>
-	{/if}
+		{#if $$slots.help || help}
+			<FormText disabled={$$props.disabled}>
+				{#if $$slots.help}<slot name="help"/>{:else}{help}{/if}
+			</FormText>
+		{/if}
 
 	</FormGroup>
 {/if}

@@ -18,6 +18,8 @@ const page      = _store.page
 const user      = _store.user
 const settings  = _store.settings
 
+$: noAnimations = $settings.ui.animate? '' : 'no-animations'
+
 function toggleNavbar() {
 	return navbarOpen = !navbarOpen
 }
@@ -85,8 +87,8 @@ function toggleNavbar() {
 					</NavItem>
 				{:else}
 					<NavItem class="me-2">
-						<NavLink on:click={() => $settings.hideMoney = !$settings.hideMoney} id="hideMoney" class="emoji">
-							{#if $settings.hideMoney}🙈{:else}🤑{/if}
+						<NavLink on:click={() => $settings.ui.money = !$settings.ui.money} id="hideMoney" class="emoji">
+							{#if $settings.ui.money}🤑{:else}🙈{/if}
 						</NavLink>
 						<Tooltip target="hideMoney">Show/hide monetary values</Tooltip>
 					</NavItem>
@@ -115,6 +117,6 @@ function toggleNavbar() {
 	</div>
 {/if}
 
-<main class="container-fluid pt-3 px-0 px-sm-2" id={`page-${$page.id}`}>
+<main class={`container-fluid pt-3 px-0 px-sm-2 ${noAnimations}`} id={`page-${$page.id}`}>
 	<slot/>
 </main>

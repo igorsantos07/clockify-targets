@@ -8,10 +8,13 @@ import { colorScaleFor, pct } from '$lib/fmt'
 import { s2h } from '$lib/date'
 import { idGenerator } from '$lib'
 import { Progress, Tooltip } from '@sveltestrap/sveltestrap'
+import { _store } from '$data/_store.js'
 
 const idGen = idGenerator()
 const SMALL_PROGRESS_BAR = 0.15
 export let workedSecs, hours, perDaysTarget, total, left
+
+const settings = _store.settings
 
 const pctDone     = s2h(workedSecs) / hours
 const pctExpected = (total - left) / total
@@ -19,7 +22,8 @@ const diff        = pctDone - pctExpected
 const exceeded    = pctDone >= 1
 </script>
 
-<Progress animated id={idGen('progress')} value={pctDone * 100}
+<Progress animated={$settings.ui.animate} striped={!$settings.ui.animate}
+          id={idGen('progress')} value={pctDone * 100}
           class={!exceeded && `bg-scale-${colorScaleFor(perDaysTarget)}`} color={exceeded && 'success'}>
 	{#if exceeded}
 		<b>🔥 100% 🔥</b>

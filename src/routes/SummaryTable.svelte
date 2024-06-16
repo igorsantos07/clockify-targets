@@ -15,7 +15,7 @@ export let targetSecs, leftSecs
 /** @type Days */ export let daysLeft
 
 const settings = _store.settings
-$: showOff = !$settings.hideMoney
+$: showOff = $settings.ui.money
 /** A hackish variable to be used with {#key} on values related to these properties */
 $: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.exchange.rate + $settings.exchange.fee
 

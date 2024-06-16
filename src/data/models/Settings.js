@@ -17,7 +17,6 @@ export default class Settings extends Model {
 		GBP: '🇬🇧 GBP',
 	}
 
-	hideMoney = true
 	currency
 	hourlyRate = 10
 	exchange   = { //this is usually replaced at the constructor if the guessed currency is not USD
@@ -29,6 +28,10 @@ export default class Settings extends Model {
 		show         : [5, 6],
 		maxDailyHours: 12,
 		endOfDay     : '16:00',
+	}
+	ui = {
+		animate: true,
+		money  : true,
 	}
 
 	constructor() {

@@ -86,8 +86,15 @@ header {
 
 }
 
-main {
-  .card:last-of-type {
-    margin-bottom: 0 !important;
-  }
+//not sure why this was added, given cards don't have bottom margin by default??
+//#page-targets {
+//  .card:last-of-type { margin-bottom: 0 !important; }
+//}
+
+#page-settings {
+  .card:last-of-type { margin-bottom: 2rem; }
+}
+
+main.no-animations {
+  .progress + .progress { margin-top: 1px }
 }

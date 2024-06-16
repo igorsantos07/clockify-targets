@@ -28,7 +28,7 @@ You can preview the production build with `npm run preview`.
 
 The app is served at https://clockify-targets.web.app.
 
-To deploy it there, use `npx firebase deploy` - although you probably don't need that, Firebase already auto-wired it to GitHub pushes and pull requests 🎉
+To deploy it there, use `npx firebase deploy` - although you probably don't need that, Firebase already auto-wired itself to GitHub pushes and pull requests 🎉
 
 It's also possible to emulate hosting localy: `npx firebase serve`. This will _not_ build the app previously, you still need to run `npx run build` before, if necessary.
 

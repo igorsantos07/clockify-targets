@@ -85,6 +85,9 @@
   opacity: 0.6; //originally from Clockify (viewable on the Timesheet screen)
   cursor: not-allowed;
 }
+.form-check-label .form-text {
+  display: block;
+}
 input.w-auto {
   flex-grow: 0 !important;
   @include media-breakpoint-down(sm) { //reverts to the standard, so it's full-width on narrow screens
