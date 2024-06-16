@@ -63,6 +63,7 @@ export default class Settings extends Model {
 	 */
 	static #guessCurrency() {
 		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+		console.log({ tz })
 		const regions = tz.match(/^(?<continent>.+)(\/.+)?\/(?<city>.+)$/).groups
 		switch (regions.continent) {
 			case 'America':
