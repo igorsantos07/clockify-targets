@@ -4,6 +4,7 @@ import * as devalue from 'devalue'
 
 import User from './models/User'
 import Settings from './models/Settings'
+import Page from '$data/models/Page.js'
 const MODEL_LIST = [User, Settings]
 		.map(model => [model._TYPE, model])
 		|>Object.fromEntries(#)
@@ -61,6 +62,8 @@ const modelPersistance = (key, initial) => basePersisted(key, initial, {
 export const _store = {
 	API_KEY: generalPersistance('API_KEY', ''),
 	loading: memoryPersistance(false),
+	/** @type SvelteStore<Page> */
+	page: memoryPersistance(new Page),
 	/** @type SvelteStore<Settings> */
 	settings: modelPersistance('settings', new Settings),
 	/** @type SvelteStore<?User> */

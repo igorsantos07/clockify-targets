@@ -1,12 +1,3 @@
-<svelte:head>
-	<link rel="shortcut icon" type="image/png" href="/favicon-white.png"/>
-
-	<!-- TODO check with (future) users if we need to explictly download an emoji font) -->
-	<!--	<link rel="preconnect" href="https://fonts.googleapis.com"/>-->
-	<!--	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>-->
-	<!--	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"/>-->
-</svelte:head>
-
 <style>
 @import "../styles/main.scss";
 @import "~/bootstrap-icons/font/bootstrap-icons";
@@ -23,6 +14,7 @@ FIREBASE_INIT()
 let navbarOpen  = false
 const isAuth    = new Auth().$isAuth
 const isLoading = _store.loading
+const page      = _store.page
 const user      = _store.user
 const settings  = _store.settings
 
@@ -30,6 +22,17 @@ function toggleNavbar() {
 	return navbarOpen = !navbarOpen
 }
 </script>
+
+<svelte:head>
+	<title>{$page.title} [ClockifyTargets]</title>
+
+	<link rel="shortcut icon" type="image/png" href="/favicon-white.png"/>
+
+	<!-- TODO check with (future) users if we need to explictly download an emoji font) -->
+	<!--	<link rel="preconnect" href="https://fonts.googleapis.com"/>-->
+	<!--	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>-->
+	<!--	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"/>-->
+</svelte:head>
 
 <header>
 	<Navbar color="dark" dark expand="sm"><!-- color prop: bg; dark/light prop: text color lol -->
@@ -112,6 +115,6 @@ function toggleNavbar() {
 	</div>
 {/if}
 
-<main class="container-fluid pt-3 px-0 px-sm-2">
+<main class="container-fluid pt-3 px-0 px-sm-2" id={`page-${$page.id}`}>
 	<slot/>
 </main>

@@ -1,10 +1,10 @@
 <script>
-import Title from '$cmp/Title.svelte'
 import Cash from './Cash.svelte'
 import Schedule from './Schedule.svelte'
-</script>
+import Page from '$data/models/Page.js'
 
-<Title page="Settings"/>
+Page.init('Settings')
+</script>
 
 <Cash/>
 <Schedule/>
