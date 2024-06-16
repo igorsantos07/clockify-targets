@@ -63,28 +63,29 @@ export default class Settings extends Model {
 	 */
 	static #guessCurrency() {
 		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-		console.log({ tz })
-		const regions = tz.match(/^(?<continent>.+)(\/.+)?\/(?<city>.+)$/).groups
-		switch (regions.continent) {
-			case 'America':
-				switch (regions.city) {
-					case 'Sao_Paulo': return 'BRL'
-				}
-				break
-			case 'Europe':
-				switch (regions.city) {
-					case 'Sofia': //Bulgaria
-					case 'Zagreb': //Croatia (non-canonical TZ)
-					case 'Prague': //Czech Republic
-					case 'Copenhagen': //Denmark (non-canonical TZ)
-					case 'Budapest': //Hungary
-					case 'Warsaw': //Poland
-					case 'Bucharest': //Romania
-					case 'Stockholm': //Sweden (non-canonical TZ)
-						break //does nothing, so it will return USD by default for now for all non-euro countries
-					case 'London':  return 'GBP'
-					default:        return 'EUR'
-				}
+		const regions = tz.match(/^(?<continent>.+)(\/.+)?\/(?<city>.+)$/)
+		if (regions) { //tz="UTC" won't fall here
+			switch (regions.groups.continent) {
+				case 'America':
+					switch (regions.groups.city) {
+						case 'Sao_Paulo': return 'BRL'
+					}
+					break
+				case 'Europe':
+					switch (regions.groups.city) {
+						case 'Sofia': //Bulgaria
+						case 'Zagreb': //Croatia (non-canonical TZ)
+						case 'Prague': //Czech Republic
+						case 'Copenhagen': //Denmark (non-canonical TZ)
+						case 'Budapest': //Hungary
+						case 'Warsaw': //Poland
+						case 'Bucharest': //Romania
+						case 'Stockholm': //Sweden (non-canonical TZ)
+							break //does nothing, so it will return USD by default for now for all non-euro countries
+						case 'London':  return 'GBP'
+						default:        return 'EUR'
+					}
+			}
 		}
 		return 'USD'
 	}
