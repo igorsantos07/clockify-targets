@@ -14,6 +14,8 @@ const WEEK_START_CLOCKIFY = {
 
 const weekStartsOn = WEEK_START_CLOCKIFY[get(_store.user)?.settings.weekStart]
 
+const leftPad = new Intl.NumberFormat('en-US', { minimumIntegerDigits: 2 })
+
 export const week = {
 	start: (date = new Date()) => startOfWeek(date, { weekStartsOn }),
 	end  : (date = new Date()) => endOfWeek(date, { weekStartsOn })
@@ -42,14 +44,20 @@ export const d2s = duration => toSeconds(duration)
  * @returns {string} H:MM:SS
  */
 export function s2d(seconds, withSeconds = false) {
-	const s = Math.floor(seconds % 60)
-	let m = Math.floor(seconds / 60)
+	let neg = false
+	if (seconds < 0) { //we will add the negative back in the end; it's easier than changing the rounding method, Math.abs, etc
+		neg = true
+		seconds *= -1
+	}
+
+	let s   = Math.floor(seconds % 60)
+	let m   = Math.floor(seconds / 60)
 	const h = Math.floor(m / 60)
 	m = Math.floor(m % 60)
 
-	const strM = m < 10? `0${m}` : m
-	const strS = s < 10? `0${s}` : s
-	return withSeconds? `${h}:${strM}:${strS}` : `${h}:${strM}`
+	const strM = leftPad.format(m)
+	return (neg? '-' : '')
+			+(withSeconds? `${h}:${strM}:${(leftPad.format(s))}` : `${h}:${strM}`)
 }
 
 /**
