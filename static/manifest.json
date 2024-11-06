@@ -1,0 +1,19 @@
+{
+    "id": "br.com.igorsantos.clockify-targets",
+    "name": "Clockify Targets",
+    "short_name": "Clockify Targets",
+    "theme_color": "#12191D",
+    "background_color": "#263238",
+    "display": "standalone",
+    "display_override": ["window-controls-overlay", "standalone"],
+    "scope": "/",
+    "start_url": "/",
+    "description": "Set your work targets, integrating with the Clockify time tracker",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "sizes": "256x256"
+        }
+    ]
+}
