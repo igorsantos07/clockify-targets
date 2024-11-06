@@ -45,7 +45,7 @@ function toggleNavbar() {
 			<Collapse isOpen={navbarOpen} navbar expand="sm">
 				<Nav navbar>
 					<NavItem>
-						<NavLink disabled={!$isAuth} href="/">
+						<NavLink disabled={!$isAuth} href="/" data-sveltekit-preload-data="false">
 							<Icon name="bullseye"/> Targets
 						</NavLink>
 					</NavItem>
