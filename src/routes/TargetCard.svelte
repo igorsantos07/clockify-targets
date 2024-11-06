@@ -1,5 +1,6 @@
 <script>
 import { Card, CardHeader, CardTitle, Col, ListGroup, ListGroupItem, Row } from '@sveltestrap/sveltestrap'
+import { h2s } from '$lib/date'
 import { colorScaleFor } from '$lib/fmt'
 import { _store } from '$data/_store'
 import Settings from '$data/models/Settings'
@@ -17,13 +18,16 @@ export let start, end
 export let title
 
 const settings      = _store.settings
-const workedSecs    = billable + nonBillable
 const period        = new Period(title, start, end)
 const considerToday = $settings.shouldConsiderToday
 
 //so we can read+subscribe in this own component
 const targetHours = period.target
 const daysOff     = period.daysOff
+const daysSick    = period.daysSick
+
+const sickSecs   = h2s($daysSick * Period.WORK_HOURS_A_DAY)
+const workedSecs = billable + nonBillable + sickSecs
 
 /** @type Days */ const daysLeft = new Days(new Date(), end, considerToday)
 
@@ -57,7 +61,7 @@ function selectWorkingDays(days) {
 				<CardTitle>{title}</CardTitle>
 			</Col>
 			<Col xs="auto" class="side-btn">
-				<CornerButtons bind:daysOff={period.daysOff} bind:target={period.target}/>
+				<CornerButtons bind:daysSick={period.daysSick} bind:daysOff={period.daysOff} bind:target={period.target}/>
 			</Col>
 		</Row>
 	</CardHeader>
@@ -66,7 +70,7 @@ function selectWorkingDays(days) {
 		<NonBillableAlert {nonBillable}/>
 
 		<ListGroupItem class="pb-0">
-			<SummaryTable daysOff={period.daysOff} {daysLeft} {targetSecs} {leftSecs} {workedSecs}/>
+			<SummaryTable daysOff={period.daysOff} daysSick={period.daysSick} {daysLeft} {targetSecs} {leftSecs} {workedSecs}/>
 		</ListGroupItem>
 
 		<ListGroupItem class="p-0">

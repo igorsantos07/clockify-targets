@@ -67,3 +67,10 @@ export function s2d(seconds, withSeconds = false) {
  * @returns {string}
  */
 export const s2h = (seconds, decimalPlaces = 1) => (seconds / 60 / 60).toFixed(decimalPlaces)
+
+/**
+ * Hours to seconds
+ * @param hours {number}
+ * @returns {number}
+ */
+export const h2s = hours => hours * 60 * 60

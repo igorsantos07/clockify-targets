@@ -7,11 +7,14 @@ export default class Period {
 	/** @type SvelteStore<number> Hours to be worked */ target
 	/** @type SvelteStore<number> */ daysOff
 
-	constructor(title, start, end) {
-		this.days    = new Days(start, end)
+	static get WORK_HOURS_A_DAY() { return 8 } //why no JS class constants, god
 
-		this.target  = intPersistance(`${title}'s target`, 8 * this.days.weekdays) //8 hours a day is the norm... right?
-		this.daysOff = intPersistance(`${title}'s days off`, 0)
+	constructor(title, start, end) {
+		this.days     = new Days(start, end)
+		this.daysOff  = intPersistance(`${title}'s days off`, 0)
+		this.daysSick = intPersistance(`${title}'s sick days`, 0)
+
+		this.target = intPersistance(`${title}'s target`, Period.WORK_HOURS_A_DAY * this.days.weekdays)
 	}
 
 }

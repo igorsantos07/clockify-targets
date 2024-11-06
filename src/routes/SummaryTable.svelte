@@ -10,7 +10,7 @@ import { _store } from '$data/_store'
 const idGen = idGenerator()
 
 export let workedSecs
-export let daysOff
+export let daysOff, daysSick
 export let targetSecs, leftSecs
 /** @type Days */ export let daysLeft
 
@@ -59,6 +59,7 @@ $: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.excha
 					<li><b>{daysLeft.saturdays}</b> {plur('Saturday', daysLeft.saturdays)}</li>
 					<li><b>{daysLeft.sundays}</b> {plur('Sunday', daysLeft.sundays)}</li>
 					<li><b>{$daysOff || 'no'}</b> {plur('day', $daysOff)} off</li>
+					{#if $daysSick}<li><b>{$daysSick}</b> {plur('day', $daysOff)} sick</li>{/if}
 				</ul>
 			</Tooltip>
 		</td>
