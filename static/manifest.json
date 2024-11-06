@@ -5,15 +5,42 @@
     "theme_color": "#12191D",
     "background_color": "#263238",
     "display": "standalone",
-    "display_override": ["window-controls-overlay", "standalone"],
     "scope": "/",
     "start_url": "/",
     "description": "Set your work targets, integrating with the Clockify time tracker",
+    "prefer_related_applications": false,
     "orientation": "any",
     "icons": [
         {
+            "src": "/favicon-512.png",
+            "sizes": "512x512"
+        },
+        {
             "src": "/favicon.png",
             "sizes": "256x256"
+        },
+        {
+            "src": "/favicon-192.png",
+            "sizes": "192x192"
+        }
+    ],
+    "dir": "auto",
+    "lang": "en",
+    "categories": [
+        "productivity",
+        "utilities"
+    ],
+    "edge_side_panel": {
+        "preferred_width": 350
+    },
+    "screenshots": [
+        {
+            "src": "/screenshot-narrow.png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot-wideish.png",
+            "form_factor": "wide"
         }
     ]
 }
