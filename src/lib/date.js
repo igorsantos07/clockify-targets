@@ -1,4 +1,4 @@
-import { endOfWeek, startOfWeek } from 'date-fns'
+import { endOfWeek, startOfMonth, startOfWeek } from 'date-fns'
 import { _store, get } from '$data/_store'
 import { parse as parseDuration, toSeconds } from 'iso8601-duration'
 
@@ -17,7 +17,14 @@ const weekStartsOn = WEEK_START_CLOCKIFY[get(_store.user)?.settings.weekStart]
 const leftPad = new Intl.NumberFormat('en-US', { minimumIntegerDigits: 2 })
 
 export const week = {
-	start: (date = new Date()) => startOfWeek(date, { weekStartsOn }),
+	start: (date = new Date()) => {
+		const sow = startOfWeek(date, { weekStartsOn })
+		if (sow.getMonth()+1 == date.getMonth()) { //we're at the start of the month and the week starts in the last month
+			return startOfMonth(date)
+		} else {
+			return sow
+		}
+	},
 	end  : (date = new Date()) => endOfWeek(date, { weekStartsOn })
 }
 
