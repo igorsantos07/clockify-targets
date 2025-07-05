@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-static'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -21,12 +21,12 @@ const config = {
 			/** refuses to build if some page seems to be missing */
 			strict: true,
 		}),
-		alias: {
-			$cmp: 'src/cmp',
+		alias  : {
+			$cmp : 'src/cmp',
 			$data: 'src/data',
-			'~': 'node_modules',
-		}
+			'~'  : 'node_modules',
+		},
 	},
-};
+}
 
-export default config;
+export default config

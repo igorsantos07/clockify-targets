@@ -1,3 +1,4 @@
+import devtoolsJson from 'vite-plugin-devtools-json'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 import babel from 'vite-plugin-babel'
@@ -10,8 +11,9 @@ export default defineConfig({
 			configFile: false,
 			plugins   : [
 				['@babel/plugin-proposal-pipeline-operator', { proposal: 'hack', topicToken: '#' }],
-				'@babel/plugin-proposal-throw-expressions'
-			]
-		}})
-	]
-});
+				'@babel/plugin-proposal-throw-expressions',
+			],
+		}}),
+		devtoolsJson(),
+	],
+})
