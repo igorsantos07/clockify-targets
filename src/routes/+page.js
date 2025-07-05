@@ -1,7 +1,7 @@
 import { _store, get } from '$data/_store'
 import API from '$lib/API'
-import { d2s, id2s, week } from '$lib/date'
-import { endOfDay, endOfMonth, formatISO, intervalToDuration, parseISO, setDate, startOfDay, startOfMonth } from 'date-fns'
+import { id2s, week } from '$lib/date'
+import { endOfDay, endOfMonth, formatISO, setDate, startOfDay, startOfMonth } from 'date-fns'
 import TimeSummary from '../data/TimeSummary.js'
 
 /** @typedef TimeEntry

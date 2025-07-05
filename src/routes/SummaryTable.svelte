@@ -50,7 +50,7 @@ $: moneyUpdaterKey = $settings.hourlyRate + $settings.currency + $settings.excha
 		<td>
 			<span id={idGen('days-desc')} class="hover-help">{daysLeft.total} {plur('day', daysLeft.total)}</span>
 			<Muted>
-				(<span class="d-none d-sm-inline">with </span>{daysLeft.weekends? daysLeft.weekends : 'no'} {plur('weekend', daysLeft.weekends)}{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if})
+				(<span class="d-none d-sm-inline">with </span>{daysLeft.weekends? daysLeft.weekends : 'no'} {plur('weekend', daysLeft.weekends)}<b>{#if $daysOff}&nbsp;+ {$daysOff} {plur('day', $daysOff)} off{/if}{#if $daysSick}&nbsp;+ {$daysSick} {plur('sick day', $daysSick)}{/if}</b>)
 			</Muted>
 
 			<Tooltip target={idGen('days-desc')}>
