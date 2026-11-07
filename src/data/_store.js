@@ -19,10 +19,13 @@ export const generalPersistance = (key, initial) => basePersisted(key, initial, 
  * @returns {SvelteStore<number>}
  */
 export const intPersistance = (key, initial) => {
+	//svelte-persisted-store returns the same cached instance for a given key, so we must not mutate it:
+	//re-wrapping its `set` on every call (e.g. each time a page is mounted) made it recurse into itself
 	const store = basePersisted(key, initial, { serializer: devalue })
-	store.baseSet = store.set
-	store.set = v => store.baseSet(parseInt(v))
-	return store
+	return {
+		...store,
+		set: v => store.set(parseInt(v)),
+	}
 }
 
 const modelPersistance = (key, initial) => basePersisted(key, initial, {
