@@ -1,4 +1,4 @@
-import { differenceInDays, eachWeekendOfInterval, isSunday } from 'date-fns'
+import { addDays, differenceInDays, eachWeekendOfInterval, isAfter, isSunday, startOfDay } from 'date-fns'
 
 export default class Days {
 
@@ -12,10 +12,14 @@ export default class Days {
 	constructor(start, end, considerToday = true) {
 		this.total = differenceInDays(end, start) + (considerToday ? 1 : 0)
 
-		eachWeekendOfInterval({ start, end }).forEach(day => {
-			++this.weekendDays
-			++this[isSunday(day)? 'sundays' : 'saturdays']
-		})
+		//weekend days must be counted over the same range as `total`, so today is skipped as well when not considered
+		const countFrom = considerToday ? start : startOfDay(addDays(start, 1))
+		if (!isAfter(countFrom, end)) { //it is, when today is the last day and not considered (and date-fns would throw)
+			eachWeekendOfInterval({ start: countFrom, end }).forEach(day => {
+				++this.weekendDays
+				++this[isSunday(day)? 'sundays' : 'saturdays']
+			})
+		}
 		this.weekdays = this.total - this.weekendDays
 		this.weekends = this.weekendDays / 2
 
