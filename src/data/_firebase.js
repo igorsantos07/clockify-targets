@@ -5,7 +5,7 @@ import { getAnalytics } from 'firebase/analytics'
 import { getFirestore } from 'firebase/firestore'
 import { getPerformance } from 'firebase/performance'
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check'
-import { onLCP, onFID, onCLS } from 'web-vitals/attribution'
+import { onLCP, onINP, onCLS } from 'web-vitals/attribution'
 
 let FIREBASE
 export let ANALYTICS, DB, PERF
@@ -42,7 +42,7 @@ export const FIREBASE_INIT = () => {
 
 		//extra stuff that Performance Monitoring suggests
 		onCLS(console.debug)
-		onFID(console.debug)
+		onINP(console.debug)
 		onLCP(console.debug)
 	})
 }
