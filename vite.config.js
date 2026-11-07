@@ -16,4 +16,14 @@ export default defineConfig({
 		}}),
 		devtoolsJson(),
 	],
+	css: {
+		preprocessorOptions: {
+			scss: {
+				api: 'modern-compiler',
+				//Bootstrap 5 still relies on @import and global Sass functions; these go away only with Bootstrap 6
+				quietDeps          : true,
+				silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'if-function'],
+			},
+		},
+	},
 })
