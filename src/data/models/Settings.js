@@ -32,6 +32,7 @@ export default class Settings extends Model {
 	ui = {
 		animate: true,
 		money  : true,
+		hour12 : false,
 	}
 
 	constructor() {

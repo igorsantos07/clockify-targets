@@ -14,6 +14,9 @@ const settings = _store.settings
 		<ListGroupItem>
 			<Linput type="switch" bind:checked={$settings.ui.animate} label="Animate progress bars"/>
 
+			<Linput type="switch" bind:checked={$settings.ui.hour12}
+			        label="Use 12-hour clock (AM/PM)"/>
+
 			<Linput type="switch" bind:checked={$settings.ui.money}
 			        label="Show monetary values"
 			        help="The same as the 🙈/🤑 at the header"/>

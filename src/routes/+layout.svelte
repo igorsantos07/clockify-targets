@@ -9,6 +9,7 @@ import Auth from '$lib/Auth'
 import { _store } from '$data/_store'
 import { FIREBASE_INIT } from '$data/_firebase'
 import { afterNavigate } from '$app/navigation'
+import HourCalculator from './HourCalculator.svelte'
 
 FIREBASE_INIT()
 
@@ -81,8 +82,12 @@ afterNavigate(() => navbarOpen = false)
 				</Nav>
 			</Collapse>
 		</Col>
+
 		<Col xs="auto">
 			<Nav navbar id="corner-nav">
+				<NavItem>
+					<HourCalculator/>
+				</NavItem>
 				{#if !$isAuth || !$user}
 					<NavItem>
 						<NavLink href="/api-key">
@@ -90,7 +95,7 @@ afterNavigate(() => navbarOpen = false)
 						</NavLink>
 					</NavItem>
 				{:else}
-					<NavItem class="me-2">
+					<NavItem>
 						<NavLink on:click={() => $settings.ui.money = !$settings.ui.money} id="hideMoney" class="emoji">
 							{#if $settings.ui.money}🤑{:else}🙈{/if}
 						</NavLink>
