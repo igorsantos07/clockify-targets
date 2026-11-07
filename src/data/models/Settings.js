@@ -44,8 +44,8 @@ export default class Settings extends Model {
 
 			switch (this.currency) { //let's date ourselves lol
 				case 'BRL':
-					this.exchange.rate = 4.8
-					this.exchange.fee  = 0.6
+					this.exchange.rate = 5.0
+					this.exchange.fee  = 0.5
 					break
 				case 'EUR':
 					this.exchange.rate = 0.9

@@ -38,14 +38,14 @@ $: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee
 			<Row>
 				<Col sm="12" md="5">
 					<Linput label="Exchange rate" disabled={disableEx}
-					        prefix={disableEx? '' : `1 USD = ${$settings.currency}`} type="number"
+					        prefix={disableEx? '' : `USD 1 = ${$settings.currency}`} type="number"
 					        bind:value={$rate} on:change={changeRate} step="0.01"
 					        help="The market rate - you can get it from Google, for instance."/>
 				</Col>
 				<Col sm="12" md="5">
 					<Linput label="Exchange fee" disabled={disableEx} suffix="%" type="number"
 					        bind:value={$settings.exchange.fee} step="0.01"
-					        help='Also known as "spread" - in finance, that is difference between the market rate and the rate you actually get.'/>
+					        help={'Also known as "spread" — in finance, that\'s difference between the market rate and the rate you actually get.'}/>
 				</Col>
 				{#key disableEx}
 					<Col sm="12" md="2" class="mb-n3 {disableEx? 'invisible' : 'visible'}">
