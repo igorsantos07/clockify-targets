@@ -6,14 +6,18 @@ import babel from 'vite-plugin-babel'
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		babel({ babelConfig: {
-			babelrc   : false, //https://github.com/owlsdepartment/vite-plugin-babel#tips
-			configFile: false,
-			plugins   : [
-				['@babel/plugin-proposal-pipeline-operator', { proposal: 'hack', topicToken: '#' }],
-				'@babel/plugin-proposal-throw-expressions',
-			],
-		}}),
+		babel({
+			//only our code uses those proposals; also skips re-printing huge libs like Firestore through Babel
+			include: 'src/**/*.js',
+			babelConfig: {
+				babelrc   : false, //https://github.com/owlsdepartment/vite-plugin-babel#tips
+				configFile: false,
+				plugins   : [
+					['@babel/plugin-proposal-pipeline-operator', { proposal: 'hack', topicToken: '#' }],
+					'@babel/plugin-proposal-throw-expressions',
+				],
+			},
+		}),
 		devtoolsJson(),
 	],
 	css: {

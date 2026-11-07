@@ -17,3 +17,6 @@ vite.config.ts.timestamp-*
 .firebase/*
 !.firebase/*.rules
 !.firebase/*.json
+
+# AI stuff
+.playwright-mcp
