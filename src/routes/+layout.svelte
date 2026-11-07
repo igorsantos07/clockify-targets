@@ -8,6 +8,7 @@ import { Col, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Ic
 import Auth from '$lib/Auth'
 import { _store } from '$data/_store'
 import { FIREBASE_INIT } from '$data/_firebase'
+import { afterNavigate } from '$app/navigation'
 
 FIREBASE_INIT()
 
@@ -23,6 +24,9 @@ $: noAnimations = $settings.ui.animate? '' : 'no-animations'
 function toggleNavbar() {
 	return navbarOpen = !navbarOpen
 }
+
+//closes the collapsed (mobile) menu once any of its links takes us somewhere
+afterNavigate(() => navbarOpen = false)
 </script>
 
 <svelte:head>
