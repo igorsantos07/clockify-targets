@@ -5,9 +5,9 @@ import * as devalue from 'devalue'
 import User from './models/User'
 import Settings from './models/Settings'
 import Page from '$data/models/Page.js'
-const MODEL_LIST = [User, Settings]
-		.map(model => [model._TYPE, model])
-		|>Object.fromEntries(#)
+const MODEL_LIST = Object.fromEntries(
+	[User, Settings].map(model => [model._TYPE, model])
+)
 
 export { get } from 'svelte/store'
 
