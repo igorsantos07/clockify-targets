@@ -82,7 +82,7 @@ function selectWorkingDays(days) {
 
 		<ListGroupItem>
 			<table>
-				{#each Settings.AVG_OPTIONS as { n, color, badge, label }}
+				{#each Settings.AVG_OPTIONS as { n, color, badge, label } (n)}
 					{@const doable = isFinite(perDays[n])}
 					<tr class:d-none={!$settings.schedule.show.includes(n)}>
 						<th class={!doable? 'text-decoration-line-through text-muted' : null}>

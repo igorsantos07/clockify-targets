@@ -30,7 +30,7 @@ $: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee
 
 		<ListGroupItem>
 			<Linput type="select" label="Your local currency" bind:value={$settings.currency} id="currency">
-				{#each Object.entries(Settings.CURRENCIES) as [value, label]}
+				{#each Object.entries(Settings.CURRENCIES) as [value, label] (value)}
 					<option {value}>{label}</option>
 				{/each}
 			</Linput>
@@ -45,7 +45,7 @@ $: actualRate = moneyLong($settings.exchange.rate * (1 - ($settings.exchange.fee
 				<Col sm="12" md="5">
 					<Linput label="Exchange fee" disabled={disableEx} suffix="%" type="number"
 					        bind:value={$settings.exchange.fee} step="0.01"
-					        help={'Also known as "spread" — in finance, that\'s difference between the market rate and the rate you actually get.'}/>
+					        help='Also known as "spread" — in finance, that&apos;s the difference between the market rate and the rate you actually get.'/>
 				</Col>
 				{#key disableEx}
 					<Col sm="12" md="2" class="mb-n3 {disableEx? 'invisible' : 'visible'}">

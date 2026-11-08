@@ -35,7 +35,7 @@ export const FIREBASE_INIT = () => {
 
 		//TODO should we have a test key for dev use? I guess it's not needed, since there's this debug token thingie
 		window.FIREBASE_APPCHECK_DEBUG_TOKEN = dev
-		const APP_CHECK = initializeAppCheck(FIREBASE, {
+		initializeAppCheck(FIREBASE, {
 		  provider: new ReCaptchaEnterpriseProvider('6LfbTlkpAAAAADMZMyD6geyj3WIPkJH-_pEJFQPK'),
 		  isTokenAutoRefreshEnabled: true
 		})

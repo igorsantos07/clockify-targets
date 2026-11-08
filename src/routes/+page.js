@@ -27,7 +27,7 @@ function sumDurations(totals, { billable, timeInterval }) { //named so it gets t
 	return totals
 }
 
-export async function load({ params }) {
+export async function load(/*{ params }*/) {
 	/** @type User */
 	const user = get(_store.user)
 	const today = new Date()

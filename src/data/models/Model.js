@@ -30,7 +30,7 @@ export default class Model {
 	}
 
 	fill(props) {
-		if (props.hasOwnProperty('data')) { //damn, this came directly from Axios
+		if (Object.hasOwn(props, 'data')) { //damn, this came directly from Axios
 			props = props.data
 		}
 

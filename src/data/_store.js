@@ -36,15 +36,16 @@ const modelPersistance = (key, initial) => basePersisted(key, initial, {
 					return undefined
 				case 'NULL' :
 					return null
-				default:
+				default: {
 					const { t: type, d: data } = JSON.parse(json)
-					if (!MODEL_LIST.hasOwnProperty(type)) {
+					if (!Object.hasOwn(MODEL_LIST, type)) {
 						//for some very odd reason, this was causing Svelte issues with `this` on a component??
 						throw new Error(`Impossible to unserialize '${type}': it's not even present on MODEL_LIST!`)
 					}
 					const instance = new MODEL_LIST[type]
 					instance.fill(data)
 					return instance
+				}
 			}
 		},
 		stringify: obj => {

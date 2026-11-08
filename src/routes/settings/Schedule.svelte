@@ -23,7 +23,7 @@ let isOpen = false
 	<ListGroup flush>
 		<ListGroupItem>
 			<Label>👁️ Show/hide average hours for:</Label>
-			{#each Settings.AVG_OPTIONS as { n: value, color, badge, restLabel }}
+			{#each Settings.AVG_OPTIONS as { n: value, color, badge, restLabel } (value)}
 					<Linput type="switch" bind:group={$settings.schedule.show} {value}>
 						<svelte:fragment slot="label"><span class={`text-${color}`}>{badge}</span> {restLabel}</svelte:fragment>
 					</Linput>
@@ -32,7 +32,7 @@ let isOpen = false
 
 		<ListGroupItem>
 			<Label>🎨 Colorize boxes according to:</Label>
-			{#each Settings.AVG_OPTIONS as { n: value, color, badge, restLabel }}
+			{#each Settings.AVG_OPTIONS as { n: value, color, badge, restLabel } (value)}
 				<Linput type="radio" bind:group={$settings.schedule.colorize} {value}>
 					<svelte:fragment slot="label"><span class={`text-${color}`}>{badge}</span> {restLabel}</svelte:fragment>
 				</Linput>
@@ -50,7 +50,7 @@ let isOpen = false
 			<Muted>
 				<Input type="switch" bind:checked={isOpen} label="Show the complete scale of time badges"/>
 				<Collapse {isOpen}>
-					{#each [...Array(Math.floor($settings.schedule.maxDailyHours)+2).keys()] as hour}
+					{#each [...Array(Math.floor($settings.schedule.maxDailyHours)+2).keys()] as hour (hour)}
 						{#if hour > $settings.schedule.maxDailyHours/4}
 							<TimeBadge seconds={60*60*hour} class="p-0 px-2 col-4 offset-4"/>
 						{/if}
