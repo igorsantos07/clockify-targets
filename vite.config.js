@@ -1,23 +1,37 @@
 import devtoolsJson from 'vite-plugin-devtools-json'
 import { sveltekit } from '@sveltejs/kit/vite'
-import { defineConfig } from 'vite'
-import babel from 'vite-plugin-babel'
+import { createFilter, defineConfig } from 'vite'
+import { transformAsync } from '@babel/core'
+import babelPlugins from './babel.plugins.js'
+
+/**
+ * Compiles the Babel proposals we use (see babel.plugins.js) in our own JS files.
+ * Replaces vite-plugin-babel, which doesn't support Babel 8 (ESM-only, no default export).
+ * Only src/ is processed: no lib uses those proposals, and running huge libs like Firestore through Babel is slow.
+ */
+function babelProposals() {
+	const filter = createFilter('src/**/*.js')
+	return {
+		name   : 'babel-proposals',
+		enforce: 'pre', //before Vite's own parsing, which doesn't know about these proposals
+		async transform(code, id) {
+			if (!filter(id)) return
+			const result = await transformAsync(code, {
+				filename  : id,
+				babelrc   : false,
+				configFile: false,
+				plugins   : babelPlugins,
+				sourceMaps: true,
+			})
+			return { code: result.code, map: result.map }
+		},
+	}
+}
 
 export default defineConfig({
 	plugins: [
 		sveltekit(),
-		babel({
-			//only our code uses those proposals; also skips re-printing huge libs like Firestore through Babel
-			include: 'src/**/*.js',
-			babelConfig: {
-				babelrc   : false, //https://github.com/owlsdepartment/vite-plugin-babel#tips
-				configFile: false,
-				plugins   : [
-					['@babel/plugin-proposal-pipeline-operator', { proposal: 'hack', topicToken: '#' }],
-					'@babel/plugin-proposal-throw-expressions',
-				],
-			},
-		}),
+		babelProposals(),
 		devtoolsJson(),
 	],
 	css: {

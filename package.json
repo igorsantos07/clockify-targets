@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"engines": {
-		"node": ">=18"
+		"node": ">=24.12"
 	},
 	"scripts": {
 		"dev": "vite dev",
@@ -29,7 +29,7 @@
 		"bootstrap-icons": "^1.13.2",
 		"date-fns": "^4.4.0",
 		"devalue": "^6.0.3",
-		"firebase": "^12.19.0",
+		"firebase": "^13.2.0",
 		"iso8601-duration": "^2.2.0",
 		"plur": "^6.0.0",
 		"svelte": "^4.2.20",
@@ -37,8 +37,10 @@
 		"web-vitals": "^6.2.3"
 	},
 	"devDependencies": {
-		"@babel/plugin-proposal-pipeline-operator": "^7.29.7",
-		"@babel/plugin-proposal-throw-expressions": "^7.29.7",
+		"@babel/core": "^8.1.0",
+		"@babel/eslint-parser": "^8.0.7",
+		"@babel/plugin-proposal-pipeline-operator": "^8.0.1",
+		"@babel/plugin-proposal-throw-expressions": "^8.0.1",
 		"@eslint/js": "^10.0.1",
 		"@sveltejs/adapter-static": "^3.0.11",
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
@@ -50,7 +52,6 @@
 		"svelte-check": "^4.7.8",
 		"typescript": "^6.0.3",
 		"vite": "^5.4.21",
-		"vite-plugin-babel": "^1.7.3",
 		"vite-plugin-devtools-json": "^1.1.2"
 	}
 }
